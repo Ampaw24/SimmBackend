@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simbackend/screens/department/departmenthome.dart';
+import 'package:simbackend/screens/lectureview/lecturedashboard.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
 
@@ -69,24 +71,28 @@ class SelectPage extends StatelessWidget {
                            
                             children: [
                               SizedBox(height: 70,),
-                              Container(
-                                padding: const EdgeInsets.all(10),
-
-                                child: Center(
-                                  child: Text("Lecturer ",style: GoogleFonts.montserrat(
-                                    textStyle: subheaderBoldbtn
-                                  ),),
+                              GestureDetector(
+                                onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>LecturerView())),
+                                child: Container(
+                                  padding: const EdgeInsets.all(10),
+                                                      
+                                  child: Center(
+                                    child: Text("Lecturer ",style: GoogleFonts.montserrat(
+                                      textStyle: subheaderBoldbtn
+                                    ),),
+                                  ),
+                                margin: const EdgeInsets.only(top: 30),
+                                  height: 50,
+                                  width: 300,
+                                  decoration: BoxDecoration(
+                                color: AppColor.mainBlue,borderRadius: BorderRadius.circular(10)
+                                  ),
+                                                        
                                 ),
-                              margin: const EdgeInsets.only(top: 30),
-                                height: 50,
-                                width: 300,
-                                decoration: BoxDecoration(
-                              color: AppColor.mainBlue,borderRadius: BorderRadius.circular(10)
-                                ),
-                          
                               ),
                                SizedBox(height: 30,),
                               GestureDetector(
+                                onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>DepartmentView())),
                                 child: Container(
                                     padding: const EdgeInsets.all(10),
                                   child: Center(
