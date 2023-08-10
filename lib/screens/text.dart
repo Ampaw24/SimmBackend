@@ -12,7 +12,7 @@ TextStyle subheaderRegular =
 TextStyle subheaderBoldbtn =
     TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600);
 TextStyle header1boldwhite =
-    TextStyle(color: Colors.white, fontSize: 48, fontWeight: FontWeight.normal);
+    TextStyle(color: Colors.white, fontSize: 39, fontWeight: FontWeight.normal);
 TextStyle subheaderBoldWhite =
     TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal);
 TextStyle subheaderBoldbtn2 =

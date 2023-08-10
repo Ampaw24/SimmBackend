@@ -5,6 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:sidebarx/sidebarx.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
+import 'package:simbackend/utils/sidebar.dart';
+
+import '../../utils/topnavbar.dart';
 
 class LecturerView extends StatefulWidget {
   const LecturerView({super.key});
@@ -20,78 +23,27 @@ class _LecturerViewState extends State<LecturerView> {
       body: Column(
         children: [
           TopNavBar(),
-          Row(
-        children: [
-          SidebarX(
-            
-            controller: SidebarXController(selectedIndex: 0),
-            items: const [
-              SidebarXItem(icon: Icons.home, label: 'Home'),
-              SidebarXItem(icon: Icons.search, label: 'Search'),
-            ],
+             Container(
+            width: 250.0,
+            height: 50,
+            color: Colors.white,
           ),
-          // Your app screen body
-        ],
-      ),
-        ],
+          Expanded(
+            child: Row(
+              children: [
+             
+              Sidebar(),
+              ],
+            ),
+          )
+      
+         
+                 ],
       ),
     );
   }
 }
 
-class TopNavBar extends StatelessWidget {
-  const TopNavBar({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 100,
-      color: AppColor.mainBlue,
-      child: Row(
-        children: [
-          ImageRowText(),
-          Spacer(),
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10)),
-            child: Center(
-                child: Icon(
-              Icons.message,
-              color: AppColor.mainBlue,
-            )),
-          ),
-          SizedBox(
-            width: 25,
-          ),
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10)),
-            child: Icon(Icons.notifications, color: AppColor.mainBlue),
-          ),
-          SizedBox(
-            width: 20,
-          ),
-          Container(
-            margin: const EdgeInsets.only(right: 50),
-            padding: const EdgeInsets.all(10),
-            width: 170,
-            height: 60,
-            child: ProfileDetail(),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class ProfileDetail extends StatelessWidget {
   const ProfileDetail({
@@ -126,40 +78,3 @@ class ProfileDetail extends StatelessWidget {
   }
 }
 
-class ImageRowText extends StatelessWidget {
-  const ImageRowText({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.only(left: 10),
-          child: Image(image: AssetImage("assets/atulogo.png")),
-        ),
-        Column(
-          children: [
-            Container(
-                child: Text(
-              "SIM",
-              style: GoogleFonts.montserrat(textStyle: header1boldwhite),
-            )),
-            Container(
-                margin: const EdgeInsets.only(
-                  left: 15,
-                ),
-                child: Text(
-                  "Lecturer Admin",
-                  style: GoogleFonts.montserrat(
-                    textStyle: subheaderBoldWhite,
-                  ),
-                )),
-          ],
-        )
-      ],
-    );
-  }
-}
