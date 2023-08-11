@@ -25,7 +25,7 @@ class _LecturerViewState extends State<LecturerView> {
           TopNavBar(),
              Container(
             width: 250.0,
-            height: 50,
+            height: 100,
             color: Colors.white,
           ),
           Expanded(
