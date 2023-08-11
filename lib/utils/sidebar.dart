@@ -8,46 +8,49 @@ class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-   
       decoration: BoxDecoration(
           color: AppColor.mainBlueLight,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(15)
-        )
-      ),
+          borderRadius: BorderRadius.only(topRight: Radius.circular(15))),
       width: 250.0,
-    
-      child: SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          
           children: [
-           
             ListTile(
-              
-              leading: Icon(FontAwesomeIcons.tachometerAlt, color: Colors.white),
+              leading:
+                  Icon(FontAwesomeIcons.tachometerAlt, color: Colors.white),
               title: Text('Dashboard', style: TextStyle(color: Colors.white)),
             ),
-            Divider(color: Colors.white,),
+            Divider(
+              color: Colors.white,
+            ),
             ListTile(
-              leading: Icon(FontAwesomeIcons.graduationCap, color: Colors.white),
-              title: Text('Assignment', style: TextStyle(color: Colors.white)),
+              leading:
+                  Icon(FontAwesomeIcons.graduationCap, color: Colors.white),
+              title:
+                  Text('Assignment', style: TextStyle(color: Colors.white)),
             ),
-             Divider(color: Colors.white,),
-              ListTile(
-             
-              title: Text('Manage Assignment', style: TextStyle(color: Colors.white)),
+            Divider(
+              color: Colors.white,
             ),
-             Divider(color: Colors.white,),
-              ListTile(
+            ListTile(
+              title: Text('Manage Assignment',
+                  style: TextStyle(color: Colors.white)),
+            ),
+            Divider(
+              color: Colors.white,
+            ),
+            ListTile(
               leading: Icon(FontAwesomeIcons.calendar, color: Colors.white),
               title: Text('Schedules', style: TextStyle(color: Colors.white)),
             ),
-             Divider(color: Colors.white,),
-              ListTile(
+            Divider(
+              color: Colors.white,
+            ),
+            ListTile(
               leading: Icon(FontAwesomeIcons.bullhorn, color: Colors.white),
-              title: Text('Announcement', style: TextStyle(color: Colors.white)),
+              title:
+                  Text('Announcement', style: TextStyle(color: Colors.white)),
             ),
             //  Divider(color: Colors.white,),
             //   ListTile(

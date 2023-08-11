@@ -1,11 +1,8 @@
 // ignore_for_file: avoid_unnecessary_containers
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/screens/text.dart';
-import 'package:simbackend/utils/colors.dart';
 import 'package:simbackend/utils/sidebar.dart';
-
 import '../../utils/topnavbar.dart';
 
 class LecturerView extends StatefulWidget {
@@ -21,23 +18,18 @@ class _LecturerViewState extends State<LecturerView> {
     return Scaffold(
       body: Column(
         children: [
-          TopNavBar(),
-          Expanded(
-            child: Row(
-              children: [
-             
+          const TopNavBar(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
               Sidebar(),
-              ],
-            ),
+            ],
           )
-      
-         
-                 ],
+        ],
       ),
     );
   }
 }
-
 
 class ProfileDetail extends StatelessWidget {
   const ProfileDetail({
@@ -54,8 +46,7 @@ class ProfileDetail extends StatelessWidget {
           width: 40,
           decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/catprofile.JPG"),
-                fit: BoxFit.cover),
+                image: AssetImage("assets/catprofile.JPG"), fit: BoxFit.cover),
             borderRadius: BorderRadius.circular(25),
           ),
         ),
@@ -64,11 +55,9 @@ class ProfileDetail extends StatelessWidget {
         ),
         Text(
           "Edmund Bleo \n Lecturer",
-          style: GoogleFonts.montserrat(
-              textStyle: subheaderBoldbtn2),
+          style: GoogleFonts.montserrat(textStyle: subheaderBoldbtn2),
         ),
       ],
     );
   }
 }
-
