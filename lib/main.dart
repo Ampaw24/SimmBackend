@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:simbackend/screens/selectpage.dart';
-
 void main() {
   runApp(const MyApp());
 }

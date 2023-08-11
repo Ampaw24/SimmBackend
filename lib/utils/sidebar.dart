@@ -8,6 +8,7 @@ class Sidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+   
       decoration: BoxDecoration(
           color: AppColor.mainBlueLight,
         borderRadius: BorderRadius.only(
@@ -16,27 +17,57 @@ class Sidebar extends StatelessWidget {
       ),
       width: 250.0,
     
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        
-        children: [
-          SizedBox(height: 20,),
-          ListTile(
-            leading: Icon(FontAwesomeIcons.tachometerAlt, color: Colors.white),
-            title: Text('Dashboard', style: TextStyle(color: Colors.white)),
-          ),
-          Divider(color: Colors.white,),
-          ListTile(
-            leading: Icon(Icons.settings, color: Colors.white),
-            title: Text('Settings', style: TextStyle(color: Colors.white)),
-          ),
-           Divider(color: Colors.white,),
-          ListTile(
-            leading: Icon(Icons.person, color: Colors.white),
-            title: Text('Profile', style: TextStyle(color: Colors.white)),
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          
+          children: [
+           
+            ListTile(
+              
+              leading: Icon(FontAwesomeIcons.tachometerAlt, color: Colors.white),
+              title: Text('Dashboard', style: TextStyle(color: Colors.white)),
+            ),
+            Divider(color: Colors.white,),
+            ListTile(
+              leading: Icon(FontAwesomeIcons.graduationCap, color: Colors.white),
+              title: Text('Assignment', style: TextStyle(color: Colors.white)),
+            ),
+             Divider(color: Colors.white,),
+              ListTile(
+             
+              title: Text('Manage Assignment', style: TextStyle(color: Colors.white)),
+            ),
+             Divider(color: Colors.white,),
+              ListTile(
+              leading: Icon(FontAwesomeIcons.calendar, color: Colors.white),
+              title: Text('Schedules', style: TextStyle(color: Colors.white)),
+            ),
+             Divider(color: Colors.white,),
+              ListTile(
+              leading: Icon(FontAwesomeIcons.bullhorn, color: Colors.white),
+              title: Text('Announcement', style: TextStyle(color: Colors.white)),
+            ),
+            //  Divider(color: Colors.white,),
+            //   ListTile(
+            //   leading: Icon(FontAwesomeIcons.message, color: Colors.white),
+            //   title: Text('Message', style: TextStyle(color: Colors.white)),
+            //   trailing: Container(),
+            // ),
+            //  Divider(color: Colors.white,),
+            //  ListTile(
+            //   leading: Icon(FontAwesomeIcons.vectorSquare, color: Colors.white),
+            //   title: Text('Logout', style: TextStyle(color: Colors.white)),
+            //   trailing: Container(),
+            // ),
+            //  Divider(color: Colors.white,),
+            // ListTile(
+            //   leading: Icon(Icons.person, color: Colors.white),
+            //   title: Text('Profile', style: TextStyle(color: Colors.white)),
+            // ),
+          ],
+        ),
       ),
     );
   }

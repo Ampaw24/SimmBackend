@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sidebarx/sidebarx.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
 import 'package:simbackend/utils/sidebar.dart';
@@ -23,11 +22,6 @@ class _LecturerViewState extends State<LecturerView> {
       body: Column(
         children: [
           TopNavBar(),
-             Container(
-            width: 250.0,
-            height: 100,
-            color: Colors.white,
-          ),
           Expanded(
             child: Row(
               children: [
