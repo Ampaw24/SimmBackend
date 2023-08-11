@@ -1,7 +1,5 @@
+// ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import '../screens/text.dart';
 class ImageRowText extends StatelessWidget {
   const ImageRowText({
     super.key,
@@ -9,14 +7,15 @@ class ImageRowText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(15),
-          margin: const EdgeInsets.only(left: 10),
-          child: Image(image: AssetImage("assets/dashboardlogo.png")),
-        ),
-        ],
+    return Container(
+      width: 150,
+      margin: const EdgeInsets.only(left: 5, top: 10, bottom: 10),
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage("assets/dashboardlogo.png"),
+              fit: BoxFit.cover)),
+
+      // child: Image(image: AssetImage("assets/dashboardlogo.png")),
     );
   }
 }
