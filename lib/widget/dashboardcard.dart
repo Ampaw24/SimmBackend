@@ -6,36 +6,42 @@ class DashboardCard extends StatelessWidget {
   final IconData cardIcon;
   final String cardText;
   final Color cardColor;
+  final VoidCallback pageNavigate;
 
-  DashboardCard({super.key, required this.cardIcon, required this.cardText, required this.cardColor});
- 
+  DashboardCard(
+      {super.key,
+      required this.cardIcon,
+      required this.cardText,
+      required this.cardColor, required this.pageNavigate});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(left: 40),
-      padding: const EdgeInsets.all(30),
-      height: 170,
-      width: 250,
-      decoration: BoxDecoration(
-          color: cardColor, borderRadius: BorderRadius.circular(12)),
+    return GestureDetector(
       child: Container(
-        margin: const EdgeInsets.only(top: 5),
-        child: Column(
-          children: [
-            Icon(
-             cardIcon,
-              size: 50,
-              color: Colors.white,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-             cardText,
-              style: GoogleFonts.montserrat(textStyle: subheaderBoldbtn),
-            )
-          ],
+        margin: const EdgeInsets.only(left: 40),
+        padding: const EdgeInsets.all(30),
+        height: 170,
+        width: 250,
+        decoration: BoxDecoration(
+            color: cardColor, borderRadius: BorderRadius.circular(12)),
+        child: Container(
+          margin: const EdgeInsets.only(top: 5),
+          child: Column(
+            children: [
+              Icon(
+                cardIcon,
+                size: 50,
+                color: Colors.white,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                cardText,
+                style: GoogleFonts.montserrat(textStyle: subheaderBoldbtn),
+              )
+            ],
+          ),
         ),
       ),
     );
