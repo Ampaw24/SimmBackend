@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:simbackend/utils/colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class Sidebar extends StatelessWidget {
+class Sidebar1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -52,24 +52,24 @@ class Sidebar extends StatelessWidget {
               title:
                   Text('Announcement', style: TextStyle(color: Colors.white)),
             ),
-            //  Divider(color: Colors.white,),
-            //   ListTile(
-            //   leading: Icon(FontAwesomeIcons.message, color: Colors.white),
-            //   title: Text('Message', style: TextStyle(color: Colors.white)),
-            //   trailing: Container(),
-            // ),
-            //  Divider(color: Colors.white,),
-            //  ListTile(
-            //   leading: Icon(FontAwesomeIcons.vectorSquare, color: Colors.white),
-            //   title: Text('Logout', style: TextStyle(color: Colors.white)),
-            //   trailing: Container(),
-            // ),
-            //  Divider(color: Colors.white,),
-            // ListTile(
-            //   leading: Icon(Icons.person, color: Colors.white),
-            //   title: Text('Profile', style: TextStyle(color: Colors.white)),
-            // ),
-          ],
+             Divider(color: Colors.white,),
+              ListTile(
+              leading: Icon(FontAwesomeIcons.message, color: Colors.white),
+              title: Text('Message', style: TextStyle(color: Colors.white)),
+              trailing: Container(),
+            ),
+          //    Divider(color: Colors.white,),
+          //    ListTile(
+          //     leading: Icon(FontAwesomeIcons.vectorSquare, color: Colors.white),
+          //     title: Text('Logout', style: TextStyle(color: Colors.white)),
+          //     trailing: Container(),
+          //   ),
+          //    Divider(color: Colors.white,),
+          //   ListTile(
+          //     leading: Icon(Icons.person, color: Colors.white),
+          //     title: Text('Profile', style: TextStyle(color: Colors.white)),
+          //   ),
+           ],
         ),
       ),
     );

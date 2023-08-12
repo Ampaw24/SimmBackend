@@ -1,9 +1,13 @@
 // ignore_for_file: avoid_unnecessary_containers
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/screens/text.dart';
+import 'package:simbackend/utils/colors.dart';
 import 'package:simbackend/utils/sidebar.dart';
+import '../../utils/sidebar2.dart';
 import '../../utils/topnavbar.dart';
+import '../../widget/dashboardcard.dart';
 
 class LecturerView extends StatefulWidget {
   const LecturerView({super.key});
@@ -19,11 +23,67 @@ class _LecturerViewState extends State<LecturerView> {
       body: Column(
         children: [
           const TopNavBar(),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Sidebar(),
-            ],
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Sidebar(),
+                Column(
+                  children: [
+                    const SizedBox(
+                      height: 120,
+                    ),
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 100,
+                        ),
+                        DashboardCard(
+                          cardText: "Dashboard",
+                          cardColor: AppColor.cardBlue,
+                          cardIcon: FontAwesomeIcons.tachometerAlt,
+                        ),
+                        DashboardCard(
+                          cardText: "Assignment",
+                          cardColor: AppColor.cardRed,
+                          cardIcon: FontAwesomeIcons.graduationCap,
+                        ),
+                        DashboardCard(
+                          cardText: "Dashboard",
+                          cardColor: AppColor.cardGreen,
+                          cardIcon: FontAwesomeIcons.tachometerAlt,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 100,
+                        ),
+                        DashboardCard(
+                          cardText: "Message",
+                          cardColor: AppColor.mainBlueLight,
+                          cardIcon: FontAwesomeIcons.message,
+                        ),
+                        DashboardCard(
+                          cardText: "Annoucement",
+                          cardColor: AppColor.cardGreen,
+                          cardIcon: FontAwesomeIcons.bullhorn,
+                        ),
+                        DashboardCard(
+                          cardText: "Dashboard",
+                          cardColor: Colors.red,
+                          cardIcon: FontAwesomeIcons.tachometerAlt,
+                        ),
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            ),
           )
         ],
       ),
