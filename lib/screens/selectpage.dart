@@ -6,6 +6,7 @@ import 'package:simbackend/screens/department/departmenthome.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
 
+import 'department/departmentlogin.dart';
 import 'lectureview/lecloginpage.dart';
 
 class SelectPage extends StatelessWidget {
@@ -104,7 +105,7 @@ class SelectPage extends StatelessWidget {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            DepartmentView())),
+                                            DepartmentLogin())),
                                 child: Container(
                                   margin: const EdgeInsets.only(top: 10),
                                   child: Center(

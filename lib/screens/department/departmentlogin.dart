@@ -7,14 +7,14 @@ import 'package:simbackend/utils/colors.dart';
 
 import '../department/departmenthome.dart';
 
-class LecturerLogin extends StatefulWidget {
-  LecturerLogin({super.key});
+class DepartmentLogin extends StatefulWidget {
+ DepartmentLogin({super.key});
 
   @override
-  State<LecturerLogin> createState() => _LecturerLoginState();
+  State<DepartmentLogin> createState() => _DepartmentLoginState();
 }
 
-class _LecturerLoginState extends State<LecturerLogin> {
+class _DepartmentLoginState extends State<DepartmentLogin> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _staffIdController = TextEditingController();
@@ -88,7 +88,7 @@ class _LecturerLoginState extends State<LecturerLogin> {
                         Container(
                           margin: const EdgeInsets.only(left: 100),
                           child: Text(
-                            "Enter  Login Credentials...",
+                            "Enter Login Credentials ...",
                             style: GoogleFonts.montserrat(
                                 textStyle: subheaderBold),
                           ),
@@ -105,7 +105,7 @@ class _LecturerLoginState extends State<LecturerLogin> {
                               ),
                               Center(
                                 child: Text(
-                                  " Lecturer Account",
+                                  "Departmental Account",
                                   style: GoogleFonts.montserrat(
                                     textStyle: subheaderBold,
                                   ),
@@ -119,7 +119,7 @@ class _LecturerLoginState extends State<LecturerLogin> {
                                   child: TextFormField(
                                     controller: _staffIdController,
                                     decoration: InputDecoration(
-                                      labelText: 'Staff ID',
+                                      labelText: 'Department ID',
                                       border: OutlineInputBorder(
                                         borderSide: BorderSide(
                                             color: AppColor.mainBlue),
@@ -164,7 +164,7 @@ class _LecturerLoginState extends State<LecturerLogin> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            LecturerView())),
+                                            DepartmentView())),
                                 child: Container(
                                   margin: const EdgeInsets.only(top: 10),
                                   child: Center(
