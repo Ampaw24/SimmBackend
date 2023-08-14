@@ -13,7 +13,6 @@ class SelectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -21,12 +20,12 @@ class SelectPage extends StatelessWidget {
             children: [
               Container(
                 margin: const EdgeInsets.only(
-                  top: 20,
+                  top: 10,
                   left: 30,
                 ),
-                padding: const EdgeInsets.all(30),
-                width: 350,
-                height: 120,
+                padding: const EdgeInsets.all(120),
+                width: 300,
+                height: 90,
                 decoration: BoxDecoration(
                   image: DecorationImage(image: AssetImage("assets/logo.png")),
                 ),
@@ -34,10 +33,10 @@ class SelectPage extends StatelessWidget {
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(25),
-                    margin: const EdgeInsets.only(top: 20,left: 30),
-                    width: MediaQuery.of(context).size.width / 2,
-                    height: MediaQuery.of(context).size.width * 0.46,
+                    padding: const EdgeInsets.all(30),
+                    margin: const EdgeInsets.only(top: 10, left: 30),
+                    width: MediaQuery.of(context).size.width * 0.43,
+                    height: MediaQuery.of(context).size.height * 0.70,
                     decoration: BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage("assets/illustrator.png"),
@@ -49,65 +48,76 @@ class SelectPage extends StatelessWidget {
                     margin: const EdgeInsets.only(top: 10),
                     // width: MediaQuery.of(context).size.width / 2,
                     // height: MediaQuery.of(context).size.width * 0.44,
-                    decoration: BoxDecoration(
-                 
-                    ),
+                    decoration: BoxDecoration(),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           margin: const EdgeInsets.only(left: 100),
-                          child: Text("Welcome",style: GoogleFonts.montserrat(textStyle: header1Bold),),
+                          child: Text(
+                            "Welcome",
+                            style:
+                                GoogleFonts.montserrat(textStyle: header1Bold),
+                          ),
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 100),
-                          child: Text("Select an option to begin...",style: GoogleFonts.montserrat(textStyle: subheaderBold),),
+                          child: Text(
+                            "Select an option to begin...",
+                            style: GoogleFonts.montserrat(
+                                textStyle: subheaderBold),
+                          ),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(left: 100,top: 20),
-                          height: 350,
-                          width: 400,
+                          margin: const EdgeInsets.only(left: 100, top: 10),
+                          // padding: const EdgeInsets.only(bottom: 90),
+                          height: 250,
+                          width: 350,
                           child: Column(
-                           
                             children: [
-                              SizedBox(height: 70,),
+                              SizedBox(
+                                height: 70,
+                              ),
                               GestureDetector(
-                                onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>LecturerView())),
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LecturerView())),
                                 child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                                      
                                   child: Center(
-                                    child: Text("Lecturer ",style: GoogleFonts.montserrat(
-                                      textStyle: subheaderBoldbtn
-                                    ),),
+                                    child: Text(
+                                      "Lecturer ",
+                                      style: GoogleFonts.montserrat(
+                                          textStyle: subheaderBoldbtn),
+                                    ),
                                   ),
-                                margin: const EdgeInsets.only(top: 30),
                                   height: 50,
                                   width: 300,
                                   decoration: BoxDecoration(
-                                color: AppColor.mainBlue,borderRadius: BorderRadius.circular(10)
-                                  ),
-                                                        
+                                      color: AppColor.mainBlue,
+                                      borderRadius: BorderRadius.circular(10)),
                                 ),
                               ),
-                               SizedBox(height: 30,),
                               GestureDetector(
-                                onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=>DepartmentView())),
+                                onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DepartmentView())),
                                 child: Container(
-                                    padding: const EdgeInsets.all(10),
+                                  margin: const EdgeInsets.only(top: 10),
                                   child: Center(
-                                    child: Text("Department",style: GoogleFonts.montserrat(
-                                      textStyle: subheaderBoldbtn
-                                    ),),
+                                    child: Text(
+                                      "Department",
+                                      style: GoogleFonts.montserrat(
+                                          textStyle: subheaderBoldbtn),
+                                    ),
                                   ),
-                                  margin: const EdgeInsets.only(bottom: 30),
-                                   height: 50,
+                                  height: 50,
                                   width: 300,
-                                   decoration: BoxDecoration(
-                                color: AppColor.mainBlue,borderRadius: BorderRadius.circular(10)
-                                  ),
-                                                        
-                              
+                                  decoration: BoxDecoration(
+                                      color: AppColor.mainBlue,
+                                      borderRadius: BorderRadius.circular(10)),
                                 ),
                               )
                             ],
@@ -117,13 +127,12 @@ class SelectPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
-                                color:AppColor.mainBlueOpc,
+                                color: AppColor.mainBlueOpc,
                                 spreadRadius: 5,
                                 blurRadius: 10,
                                 offset: Offset(2, 5),
                               ),
                             ],
-                          
                           ),
                         ),
                       ],
