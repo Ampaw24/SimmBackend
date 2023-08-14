@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:simbackend/screens/selectpage.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -16,11 +17,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Student Info Manager',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: SelectPage(),
     );
   }
 }
-

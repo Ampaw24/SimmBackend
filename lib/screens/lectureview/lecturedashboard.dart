@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
-import 'package:simbackend/utils/sidebar.dart';
 import '../../utils/sidebar2.dart';
 import '../../utils/topnavbar.dart';
 import '../../widget/dashboardcard.dart';
