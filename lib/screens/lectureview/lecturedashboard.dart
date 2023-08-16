@@ -2,12 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sidebarx/sidebarx.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
-import 'package:simbackend/widget/sidebar.dart';
-import '../../utils/sidebar2.dart';
-import '../../widget/dashboardcard.dart';
+import '../../widget/sidebartile.dart';
 
 class LecturerView extends StatefulWidget {
   const LecturerView({super.key});
@@ -27,7 +24,14 @@ class _LecturerViewState extends State<LecturerView> {
           ),
           preferredSize: Size.fromHeight(70)),
       body: Row(
-        children: [SidebarNew()],
+        children: [
+          SidebarNew(),
+          Container(
+            width: MediaQuery.of(context).size.width - 500,
+            height: 700,
+            color: Colors.red,
+          )
+        ],
       ),
     );
   }
@@ -123,14 +127,13 @@ class SidebarNew extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: 200,
+            top: 180,
             child: Column(
               children: [
-                Container(
-                  width: 300,
-                  height: 50,
-                  color: Colors.red,
-                )
+                SideBarTile(),
+                SideBarTile(),
+                SideBarTile(),
+                SideBarTile(),
               ],
             ),
           )

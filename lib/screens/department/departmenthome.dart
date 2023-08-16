@@ -28,7 +28,7 @@ class _DepartmentViewState extends State<DepartmentView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                DepartmentSidebar(),
+            
                 Column(
                   children: [
                     const SizedBox(
