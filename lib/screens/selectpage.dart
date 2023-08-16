@@ -5,80 +5,84 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/screens/department/departmenthome.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
-
+import '../constants/responsive.dart';
 import 'department/departmentlogin.dart';
 import 'lectureview/lecloginpage.dart';
 
-class SelectPage extends StatelessWidget {
+class SelectPage extends StatefulWidget {
   const SelectPage({super.key});
 
   @override
+  State<SelectPage> createState() => _SelectPageState();
+}
+
+class _SelectPageState extends State<SelectPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(
-                  top: 10,
-                  left: 30,
-                ),
-                padding: const EdgeInsets.all(120),
-                width: 300,
-                height: 90,
-                decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage("assets/logo.png")),
-                ),
+        body: SingleChildScrollView(
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              opacity: 0.35,
+              image: AssetImage("assets/background.png"),
+              fit: BoxFit.cover),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(
+                top: 10,
+                left: 30,
               ),
-              Row(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(30),
-                    margin: const EdgeInsets.only(top: 10, left: 30),
-                    width: MediaQuery.of(context).size.width * 0.43,
-                    height: MediaQuery.of(context).size.height * 0.70,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("assets/illustrator.png"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    // width: MediaQuery.of(context).size.width / 2,
-                    // height: MediaQuery.of(context).size.width * 0.44,
-                    decoration: BoxDecoration(),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(left: 100),
+              padding: const EdgeInsets.all(120),
+              width: 300,
+              height: 90,
+              decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage("assets/logo.png")),
+              ),
+            ),
+            Stack(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 100),
+                        child: Center(
                           child: Text(
                             "Welcome",
                             style:
                                 GoogleFonts.montserrat(textStyle: header1Bold),
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 100),
-                          child: Text(
-                            "Select an option to begin...",
-                            style: GoogleFonts.montserrat(
-                                textStyle: subheaderBold),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 100, top: 10),
-                          // padding: const EdgeInsets.only(bottom: 90),
-                          height: 250,
-                          width: 350,
+                      ),
+                      Center(
+                        child: Container(
+                          margin: MediaQuery.of(context).size.width >= 1680
+                              ? EdgeInsets.only(top: 40)
+                              : EdgeInsets.only(top: 30),
+                          height: 300,
+                          width: 400,
                           child: Column(
                             children: [
+                              Container(
+                                margin: const EdgeInsets.only(top: 30),
+                                child: Center(
+                                  child: Text(
+                                    "Select an option to begin...",
+                                    style: GoogleFonts.montserrat(
+                                        textStyle: subheaderBold),
+                                  ),
+                                ),
+                              ),
                               SizedBox(
-                                height: 70,
+                                height: 40,
                               ),
                               GestureDetector(
                                 onTap: () => Navigator.push(
@@ -94,7 +98,7 @@ class SelectPage extends StatelessWidget {
                                     ),
                                   ),
                                   height: 50,
-                                  width: 300,
+                                  width: 350,
                                   decoration: BoxDecoration(
                                       color: AppColor.mainBlue,
                                       borderRadius: BorderRadius.circular(10)),
@@ -107,7 +111,7 @@ class SelectPage extends StatelessWidget {
                                         builder: (context) =>
                                             DepartmentLogin())),
                                 child: Container(
-                                  margin: const EdgeInsets.only(top: 10),
+                                  margin: const EdgeInsets.only(top: 20),
                                   child: Center(
                                     child: Text(
                                       "Department",
@@ -116,7 +120,7 @@ class SelectPage extends StatelessWidget {
                                     ),
                                   ),
                                   height: 50,
-                                  width: 300,
+                                  width: 350,
                                   decoration: BoxDecoration(
                                       color: AppColor.mainBlue,
                                       borderRadius: BorderRadius.circular(10)),
@@ -137,15 +141,15 @@ class SelectPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              )
-            ],
-          ),
+                ),
+              ],
+            )
+          ],
         ),
       ),
-    );
+    ));
   }
 }
