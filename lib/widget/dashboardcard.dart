@@ -12,7 +12,8 @@ class DashboardCard extends StatelessWidget {
       {super.key,
       required this.cardIcon,
       required this.cardText,
-      required this.cardColor, required this.pageNavigate});
+      required this.cardColor,
+      required this.pageNavigate});
 
   @override
   Widget build(BuildContext context) {
@@ -20,25 +21,25 @@ class DashboardCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(left: 40),
         padding: const EdgeInsets.all(30),
-        height: 170,
-        width: 250,
+        height: 140,
+        width: 200,
         decoration: BoxDecoration(
-            color: cardColor, borderRadius: BorderRadius.circular(12)),
+            color: cardColor, borderRadius: BorderRadius.circular(10)),
         child: Container(
           margin: const EdgeInsets.only(top: 5),
           child: Column(
             children: [
               Icon(
                 cardIcon,
-                size: 50,
+                size: 40,
                 color: Colors.white,
               ),
               SizedBox(
-                height: 10,
+                height: 5,
               ),
               Text(
                 cardText,
-                style: GoogleFonts.montserrat(textStyle: subheaderBoldbtn),
+                style: GoogleFonts.montserrat(textStyle: subheaderBoldbtnwhite),
               )
             ],
           ),

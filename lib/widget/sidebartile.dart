@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/screens/text.dart';
+import 'package:simbackend/utils/colors.dart';
 
 class SideBarTile extends StatelessWidget {
-  const SideBarTile({
-    super.key,
-  });
+  final String tileText;
+  final IconData iconcard;
+
+  const SideBarTile(
+      {super.key, required this.tileText, required this.iconcard});
 
   @override
   Widget build(BuildContext context) {
@@ -16,19 +19,18 @@ class SideBarTile extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10),
         width: 300,
         height: 60,
-        color: Color.fromARGB(111, 86, 62, 226),
         child: Row(
           children: [
             Icon(
-              FontAwesomeIcons.tachometerAlt,
+              iconcard,
               size: 30,
-              color: Colors.white,
+              color: AppColor.mainBlue,
             ),
             SizedBox(
-              width: 20,
+              width: 10,
             ),
             Text(
-              "Dashboard",
+              tileText,
               style: GoogleFonts.poppins(
                 textStyle: subheaderBoldbtn,
               ),

@@ -1,171 +1,126 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last
+
 import 'package:flutter/material.dart';
-import 'package:sidebarx/sidebarx.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:simbackend/utils/colors.dart';
+import 'package:simbackend/widget/sidebartile.dart';
 
-class SidebarXExampleApp extends StatelessWidget {
-  SidebarXExampleApp({Key? key}) : super(key: key);
-
-  final _controller = SidebarXController(selectedIndex: 0);
-
+class SidebarNew extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        children: [
-          SidebarX(
-            controller: _controller,
-            theme: SidebarXTheme(
-              margin: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: canvasColor,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              textStyle: const TextStyle(color: Colors.white),
-              selectedTextStyle: const TextStyle(color: Colors.white),
-              itemTextPadding: const EdgeInsets.only(left: 30),
-              selectedItemTextPadding: const EdgeInsets.only(left: 30),
-              itemDecoration: BoxDecoration(
-                border: Border.all(color: canvasColor),
-              ),
-              selectedItemDecoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  color: actionColor.withOpacity(0.37),
+    return SingleChildScrollView(
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.80,
+        width: 250,
+        decoration: BoxDecoration(
+          color: Color.fromARGB(255, 248, 245, 245),
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(10), bottomRight: Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromARGB(255, 225, 223, 255), // Shadow color
+              offset: Offset(10, 0), // Offset from the right
+              blurRadius: 3, // Spread of the shadow
+              spreadRadius: 0, // Optional, controls the "width" of the shadow
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Positioned(
+              left: 100,
+              top: 10,
+              child: Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage('assets/catprofile.jpg'),
+                      fit: BoxFit.cover),
+                  color: AppColor.mainBlue,
+                  borderRadius: BorderRadius.circular(100),
                 ),
-                gradient: const LinearGradient(
-                  colors: [accentCanvasColor, canvasColor],
+              ),
+            ),
+            Positioned(
+              left: 100,
+              top: 20,
+              child: Container(
+                child: Icon(
+                  FontAwesomeIcons.pencil,
+                  size: 10,
+                  color: Colors.white,
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.28),
-                    blurRadius: 30,
-                  )
+                width: 27,
+                height: 27,
+                decoration: BoxDecoration(
+                  color: AppColor.mainBlue,
+                  borderRadius: BorderRadius.circular(13.5),
+                ),
+              ),
+            ),
+            Positioned(
+                top: 130,
+                left: 70,
+                bottom: 0,
+                right: 0,
+                child: Text(
+                  "edmunedu.staff.atu.gh",
+                  style: GoogleFonts.poppins(
+                      textStyle: TextStyle(
+                          fontSize: 13,
+                          color: AppColor.mainBlue,
+                          fontWeight: FontWeight.w600)),
+                )),
+            Positioned(
+                top: 150,
+                left: 100,
+                bottom: 0,
+                right: 0,
+                child: Text("Lecturer",
+                    style: GoogleFonts.roboto(
+                      textStyle: TextStyle(
+                          fontSize: 14,
+                          color: AppColor.mainBlue,
+                          fontWeight: FontWeight.w500),
+                    ))),
+            Container(
+              margin: const EdgeInsets.only(top: 170),
+              child: Divider(
+                color: AppColor.mainBlueOpc,
+              ),
+            ),
+            Positioned(
+              top: 180,
+              child: Column(
+                children: [
+                  SideBarTile(
+                    tileText: "Dashboard",
+                    iconcard: FontAwesomeIcons.tachometer,
+                  ),
+                  SideBarTile(
+                    tileText: "Manage Assignment",
+                    iconcard: FontAwesomeIcons.graduationCap,
+                  ),
+                  SideBarTile(
+                    tileText: "Schedules",
+                    iconcard: FontAwesomeIcons.calendarTimes,
+                  ),
+                  SideBarTile(
+                    tileText: "Message",
+                    iconcard: FontAwesomeIcons.message,
+                  ),
+                  SideBarTile(
+                    tileText: "Annoucements",
+                    iconcard: FontAwesomeIcons.hornbill,
+                  ),
                 ],
               ),
-              iconTheme: const IconThemeData(
-                color: Colors.white,
-                size: 20,
-              ),
-            ),
-            extendedTheme: const SidebarXTheme(
-              width: 200,
-              decoration: BoxDecoration(
-                color: canvasColor,
-              ),
-              margin: EdgeInsets.only(right: 10),
-            ),
-            footerDivider: divider,
-            headerBuilder: (context, extended) {
-              return SizedBox(
-                height: 100,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Image.asset('assets/images/avatar.png'),
-                ),
-              );
-            },
-            items: [
-              SidebarXItem(
-                icon: Icons.home,
-                label: 'Home',
-                onTap: () {
-                  debugPrint('Hello');
-                },
-              ),
-              const SidebarXItem(
-                icon: Icons.search,
-                label: 'Search',
-              ),
-              const SidebarXItem(
-                icon: Icons.people,
-                label: 'People',
-              ),
-              const SidebarXItem(
-                icon: Icons.favorite,
-                label: 'Favorites',
-              ),
-            ],
-          ),
-          Expanded(
-            child: Center(
-              child: _ScreensExample(controller: _controller),
-            ),
-          ),
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
 }
-
-class _ScreensExample extends StatelessWidget {
-  const _ScreensExample({
-    Key? key,
-    required this.controller,
-  }) : super(key: key);
-
-  final SidebarXController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return AnimatedBuilder(
-      animation: controller,
-      builder: (context, child) {
-        switch (controller.selectedIndex) {
-          case 0:
-            return ListView.builder(
-              padding: const EdgeInsets.only(top: 10),
-              itemBuilder: (context, index) => Container(
-                height: 100,
-                width: double.infinity,
-                margin: const EdgeInsets.only(bottom: 10, right: 10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Theme.of(context).canvasColor,
-                  boxShadow: const [BoxShadow()],
-                ),
-              ),
-            );
-          case 1:
-            return Text(
-              'Search',
-              style: theme.textTheme.headlineSmall,
-            );
-          case 2:
-            return Text(
-              'People',
-              style: theme.textTheme.headlineSmall,
-            );
-          case 3:
-            return Text(
-              'Favorites',
-              style: theme.textTheme.headlineSmall,
-            );
-          case 4:
-            return Text(
-              'Profile',
-              style: theme.textTheme.headlineSmall,
-            );
-          case 5:
-            return Text(
-              'Settings',
-              style: theme.textTheme.headlineSmall,
-            );
-          default:
-            return Text(
-              'Not found page',
-              style: theme.textTheme.headlineSmall,
-            );
-        }
-      },
-    );
-  }
-}
-
-const primaryColor = Color(0xFF685BFF);
-const canvasColor = Color(0xFF2E2E48);
-const scaffoldBackgroundColor = Color(0xFF464667);
-const accentCanvasColor = Color(0xFF3E3E61);
-const white = Colors.white;
-final actionColor = const Color(0xFF5F5FA7).withOpacity(0.6);
-
-final divider = Divider(color: white.withOpacity(0.3), height: 1);

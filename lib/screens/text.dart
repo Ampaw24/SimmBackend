@@ -10,12 +10,15 @@ TextStyle subheaderBold = TextStyle(
 TextStyle subheaderRegular =
     TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.normal);
 TextStyle subheaderBoldbtn =
-    TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w600);
+    TextStyle(color: AppColor.mainBlue, fontSize: 15, fontWeight: FontWeight.w600);
 TextStyle header1boldwhite =
     TextStyle(color: Colors.white, fontSize: 39, fontWeight: FontWeight.normal);
 TextStyle subheaderBoldWhite =
     TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal);
 TextStyle subheaderBoldbtn2 =
     TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600);
+
+    TextStyle subheaderBoldbtnwhite =
+    TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600);
 
 //Responsive Text
