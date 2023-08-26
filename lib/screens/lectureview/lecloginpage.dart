@@ -38,172 +38,184 @@ class _LecturerLoginState extends State<LecturerLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-                opacity: 0.20,
-                image: AssetImage("assets/background.png"),
-                fit: BoxFit.cover),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(
-                  top: 10,
-                  left: 30,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  opacity: 0.10,
+                  image: AssetImage("assets/background.png"),
+                  fit: BoxFit.cover),
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 20,
                 ),
-                padding: const EdgeInsets.all(120),
-                width: MediaQuery.of(context).size.width <= 500 ? 250 : 300,
-                height: 90,
-                decoration: BoxDecoration(
-                  image: DecorationImage(image: AssetImage("assets/logo.png")),
+                Material(
+                  borderRadius: BorderRadius.circular(15),
+                  elevation: 3.0,
+                  child: Container(
+                    width: 300,
+                    height: 90,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      image:
+                          DecorationImage(image: AssetImage("assets/logo.png")),
+                    ),
+                  ),
                 ),
-              ),
-              Stack(
-                children: [
-                  Container(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          height: 100,
-                        ),
-                        Container(
-                          child: Center(
-                            child: Text(
-                              "Welcome ",
-                              style: GoogleFonts.montserrat(
-                                  textStyle: header1Bold),
+                Stack(
+                  children: [
+                    Container(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 100,
+                          ),
+                          Container(
+                            child: Center(
+                              child: Text(
+                                "Welcome ",
+                                style: GoogleFonts.montserrat(
+                                    textStyle: header1Bold),
+                              ),
                             ),
                           ),
-                        ),
-                        Container(
-                          child: Center(
-                            child: Text(
-                              "Enter  Login Credentials...",
-                              style: GoogleFonts.montserrat(
-                                  textStyle: subheaderBold),
+                          Container(
+                            child: Center(
+                              child: Text(
+                                "Enter  Login Credentials...",
+                                style: GoogleFonts.montserrat(
+                                    textStyle: subheaderBold),
+                              ),
                             ),
                           ),
-                        ),
-                        Center(
-                          child: Container(
-                            margin: MediaQuery.of(context).size.width <= 500
-                                ? EdgeInsets.only(right: 20, top: 20)
-                                : EdgeInsets.only(top: 70),
-                            // padding: const EdgeInsets.only(bottom: 90),
-                            height: 300,
-                            width: 450,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                Center(
-                                  child: Text(
-                                    " Lecturer Account",
-                                    style: GoogleFonts.montserrat(
-                                      textStyle: subheaderBold,
-                                    ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Center(
+                            child: Container(
+                              height: 300,
+                              width: MediaQuery.of(context).size.width * 0.90,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 15,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 40,
-                                ),
-                                Container(
-                                  child: Center(
-                                    child: TextFormField(
-                                      controller: _staffIdController,
-                                      decoration: InputDecoration(
-                                        labelText: 'Staff ID',
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: AppColor.mainBlue),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
+                                  Center(
+                                    child: Text(
+                                      " Lecturer Account",
+                                      style: GoogleFonts.montserrat(
+                                        textStyle: subheaderBold,
                                       ),
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'Staff ID is required';
-                                        }
-                                        return null;
-                                      },
                                     ),
                                   ),
-                                  height: 50,
-                                  width: 300,
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 10),
-                                  child: Center(
-                                    child: TextFormField(
-                                      controller: _passwordController,
-                                      obscureText: true,
-                                      decoration: InputDecoration(
-                                        labelText: 'Password',
-                                        border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: AppColor.mainBlue),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                      ),
-                                      // validator: _validatePassword(),
-                                    ),
+                                  SizedBox(
+                                    height: 40,
                                   ),
-                                  height: 50,
-                                  width: 300,
-                                ),
-                                GestureDetector(
-                                  onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              LecturerView())),
-                                  child: Container(
-                                    margin: const EdgeInsets.only(top: 10),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
                                     child: Center(
-                                      child: Text(
-                                        "Login",
-                                        style: GoogleFonts.montserrat(
-                                            textStyle: subheaderBoldbtn),
+                                      child: TextFormField(
+                                        controller: _staffIdController,
+                                        decoration: InputDecoration(
+                                          labelText: 'Staff ID',
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColor.mainBlue),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                        ),
+                                        validator: (value) {
+                                          if (value!.isEmpty) {
+                                            return 'Staff ID is required';
+                                          }
+                                          return null;
+                                        },
                                       ),
                                     ),
                                     height: 50,
                                     width: 300,
-                                    decoration: BoxDecoration(
-                                        color: AppColor.mainBlue,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
                                   ),
-                                )
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColor.mainBlueOpc,
-                                  spreadRadius: 5,
-                                  blurRadius: 10,
-                                  offset: Offset(2, 5),
-                                ),
-                              ],
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: Center(
+                                      child: TextFormField(
+                                        controller: _passwordController,
+                                        obscureText: true,
+                                        decoration: InputDecoration(
+                                          labelText: 'Password',
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: AppColor.mainBlue),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                        ),
+                                        // validator: _validatePassword(),
+                                      ),
+                                    ),
+                                    height: 50,
+                                    width: 300,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LecturerDashboard())),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10,
+                                      ),
+                                      margin: const EdgeInsets.only(top: 20),
+                                      child: Center(
+                                        child: Text(
+                                          "Login",
+                                          style: GoogleFonts.montserrat(
+                                              textStyle: subheaderBoldbtnwhite),
+                                        ),
+                                      ),
+                                      height: 50,
+                                      width: 300,
+                                      decoration: BoxDecoration(
+                                          color: AppColor.mainBlue,
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColor.mainBlueOpc,
+                                    spreadRadius: 5,
+                                    blurRadius: 10,
+                                    offset: Offset(2, 5),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
