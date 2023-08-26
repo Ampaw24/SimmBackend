@@ -168,7 +168,7 @@ class _LecturerLoginState extends State<LecturerLogin> {
                                     width: 300,
                                   ),
                                   GestureDetector(
-                                    onTap: () => Navigator.push(
+                                    onTap: () => Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>

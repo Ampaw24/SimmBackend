@@ -25,7 +25,7 @@ List<DashboardCard> cardcontent = [
       navigate: ManageAssignment(),
       title: "Assignment",
       cardIcon: FontAwesomeIcons.fileText,
-      cardColor: AppColor.dashboardGreen),
+      cardColor: AppColor.cardBlue),
   DashboardCard(
       navigate: MessageView(),
       title: "Messages",
@@ -38,9 +38,14 @@ List<DashboardCard> cardcontent = [
       cardColor: AppColor.dashboardRed),
   DashboardCard(
       navigate: Schedules(),
-      title: "Users",
+      title: "Schedules",
       cardIcon: FontAwesomeIcons.clockRotateLeft,
-      cardColor: AppColor.dashboardBrown),
+      cardColor: AppColor.mainBlue),
+  DashboardCard(
+      navigate: Schedules(),
+      title: "Profile",
+      cardIcon: FontAwesomeIcons.person,
+      cardColor: AppColor.mainBlueOpc),
 ];
 
 class _LecturerDashboardState extends State<LecturerDashboard> {
@@ -50,6 +55,7 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
       backgroundColor: Colors.white,
       appBar: PreferredSize(
           child: AppBar(
+            leading: Container(),
             actions: [
               Text(
                 "Hello,",
@@ -59,9 +65,9 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
                 width: 7,
               ),
               Text(
-                "Kevin",
+                "Lecturer",
                 style: GoogleFonts.montserrat(
-                    fontSize: 23,
+                    fontSize: 20,
                     fontWeight: FontWeight.w600,
                     color: AppColor.btnBlue),
               ),
@@ -74,12 +80,11 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
                 width: 35,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("assets/catprofile.jpg"),
+                        image: AssetImage("assets/catprofile.JPG"),
                         fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(20)),
               )
             ],
-            leading: Icon(Icons.menu_outlined),
             backgroundColor: Colors.white,
           ),
           preferredSize: const Size.fromHeight(60)),
