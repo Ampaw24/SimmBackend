@@ -33,7 +33,7 @@ List<DashboardCard> cardcontent = [
       cardColor: AppColor.dashboardYellow),
   DashboardCard(
       navigate: Annoucements(),
-      title: "Annoucement",
+      title: "Announce \nment",
       cardIcon: FontAwesomeIcons.bullhorn,
       cardColor: AppColor.dashboardRed),
   DashboardCard(
@@ -90,9 +90,7 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
             margin: const EdgeInsets.only(left: 15),
             child: Text(
               "Dashboard",
-              style: GoogleFonts.montserrat(
-                 textStyle: headerbold1
-              ),
+              style: GoogleFonts.montserrat(textStyle: headerbold1),
             ),
           ),
           Expanded(
