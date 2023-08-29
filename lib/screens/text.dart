@@ -35,7 +35,7 @@ const logintxtwhite =
 const headerbold1 =
     TextStyle(color: Colors.black, fontSize: 22, fontWeight: FontWeight.w500);
 const dashboardCardTitle = TextStyle(
-    color: Color(0xfff9fcff), fontWeight: FontWeight.bold, fontSize: 20);
+    color: Color(0xfff9fcff), fontWeight: FontWeight.bold, fontSize: 15);
 const dashboardCardcount = TextStyle(
     color: Color(0xfff9fcff), fontWeight: FontWeight.w700, fontSize: 22);
 const headerboldblue1 = TextStyle(

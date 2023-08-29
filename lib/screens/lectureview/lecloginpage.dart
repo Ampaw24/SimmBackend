@@ -5,8 +5,6 @@ import 'package:simbackend/screens/lectureview/lecturedashboard.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
 
-import '../department/departmenthome.dart';
-
 class LecturerLogin extends StatefulWidget {
   LecturerLogin({super.key});
 

@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/screens/lectureview/announcements.dart';
 import 'package:simbackend/screens/lectureview/assignmentpage.dart';
 import 'package:simbackend/screens/lectureview/messageview.dart';
+import 'package:simbackend/screens/lectureview/profile.dart';
 import 'package:simbackend/screens/lectureview/schedulespage.dart';
-
 import '../../modules/dashboardmodule.dart';
 import '../../utils/colors.dart';
 import '../../widget/dashboardcard.dart';
@@ -25,27 +25,27 @@ List<DashboardCard> cardcontent = [
       navigate: ManageAssignment(),
       title: "Assignment",
       cardIcon: FontAwesomeIcons.fileText,
-      cardColor: AppColor.cardBlue),
+      cardColor: AppColor.mainBlue),
   DashboardCard(
       navigate: MessageView(),
       title: "Messages",
       cardIcon: FontAwesomeIcons.message,
-      cardColor: AppColor.dashboardYellow),
+      cardColor: AppColor.mainBlue),
   DashboardCard(
       navigate: Annoucements(),
       title: "Announce \nment",
       cardIcon: FontAwesomeIcons.bullhorn,
-      cardColor: AppColor.dashboardRed),
+      cardColor: AppColor.mainBlue),
   DashboardCard(
       navigate: Schedules(),
       title: "Schedules",
       cardIcon: FontAwesomeIcons.clockRotateLeft,
       cardColor: AppColor.mainBlue),
   DashboardCard(
-      navigate: Schedules(),
+      navigate: ProfilePage(),
       title: "Profile",
-      cardIcon: FontAwesomeIcons.person,
-      cardColor: AppColor.mainBlueOpc),
+      cardIcon: FontAwesomeIcons.userPen,
+      cardColor: AppColor.mainBlue),
 ];
 
 class _LecturerDashboardState extends State<LecturerDashboard> {
@@ -100,7 +100,7 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
           ),
           Expanded(
             child: GridView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2, // Number of columns in the grid
                 mainAxisSpacing: 10.0, // Spacing between rows

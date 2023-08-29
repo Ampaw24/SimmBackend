@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -11,21 +10,25 @@ class DashboarddCards extends StatelessWidget {
   final Color cardColor;
   final Widget navigatePage;
 
-  const DashboarddCards({super.key, required this.title,  required this.cardIcon,required this.counter, required this.cardColor,required this.navigatePage});
-
- 
+  const DashboarddCards(
+      {super.key,
+      required this.title,
+      required this.cardIcon,
+      required this.counter,
+      required this.cardColor,
+      required this.navigatePage});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context)=>navigatePage)),
+      onTap: () => Navigator.push(
+          context, MaterialPageRoute(builder: (context) => navigatePage)),
       child: Container(
         margin: const EdgeInsets.only(top: 10, left: 5),
         width: 150,
-        height: 130,
+        height: 100,
         decoration: BoxDecoration(
-            color:cardColor , 
-            borderRadius: BorderRadius.circular(10)),
+            color: cardColor, borderRadius: BorderRadius.circular(10)),
         child: Stack(
           children: [
             Positioned(
@@ -44,7 +47,7 @@ class DashboarddCards extends StatelessWidget {
               child: Text(
                 counter.toString(),
                 style: GoogleFonts.montserrat(
-                textStyle:  dashboardCardcount,
+                  textStyle: dashboardCardcount,
                 ),
               ),
             ),
@@ -54,7 +57,10 @@ class DashboarddCards extends StatelessWidget {
                 child: Container(
                   height: 40,
                   width: 38,
-                  child: Icon(cardIcon,color:Colors.white,),
+                  child: Icon(
+                    cardIcon,
+                    color: Colors.white,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     color: Colors.white.withOpacity(0.45),

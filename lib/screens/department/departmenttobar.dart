@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../utils/colors.dart';
 import '../../utils/imagerow.dart';
-import '../lectureview/lecturedashboard.dart';
+
 import '../text.dart';
 
 class DepartmentTopNavBar extends StatelessWidget {
