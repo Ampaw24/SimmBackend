@@ -33,138 +33,140 @@ class _ProfilePageState extends State<ProfilePage> {
                   color: AppColor.btnBlue),
             ),
           )),
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              Center(
-                child: Container(
-                  margin: const EdgeInsets.only(top: 30),
-                  height: 120,
-                  width: 120,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(60),
-                      image: DecorationImage(
-                          image: AssetImage('assets/profile.png'),
-                          fit: BoxFit.cover)),
-                ),
-              ),
-              Positioned(
-                  top: 110,
-                  left: 210,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                Center(
                   child: Container(
-                    child: Center(
-                      child: Icon(
-                        FontAwesomeIcons.pencil,
-                        weight: 10,
-                        color: Colors.white,
-                        size: 12,
-                      ),
-                    ),
-                    height: 30,
-                    width: 30,
+                    margin: const EdgeInsets.only(top: 30),
+                    height: 120,
+                    width: 120,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: AppColor.mainBlue,
-                    ),
-                  )),
-            ],
-          ),
-          Text(
-            "David Soweto",
-            style: GoogleFonts.roboto(textStyle: headerboldblue1),
-          ),
-          Text(
-            "Lecturer",
-            style: GoogleFonts.roboto(),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            child: Form(
-                key: _formkey,
-                child: Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                      ),
+                        borderRadius: BorderRadius.circular(60),
+                        image: DecorationImage(
+                            image: AssetImage('assets/profile.png'),
+                            fit: BoxFit.cover)),
+                  ),
+                ),
+                Positioned(
+                    top: 110,
+                    left: 210,
+                    child: Container(
                       child: Center(
-                        child: TextFormField(
-                          // controller: _staffIdController,
-                          decoration: InputDecoration(
-                            labelText: 'Staff Mail',
-                          ),
+                        child: Icon(
+                          FontAwesomeIcons.pencil,
+                          weight: 10,
+                          color: Colors.white,
+                          size: 12,
                         ),
                       ),
-                      height: 50,
-                      width: 300,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
+                      height: 30,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: AppColor.mainBlue,
                       ),
-                      margin: const EdgeInsets.only(top: 20),
-                      child: Center(
-                        child: TextFormField(
-                          // controller: _passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                          ),
-                          // validator: _validatePassword(),
+                    )),
+              ],
+            ),
+            Text(
+              "David Soweto",
+              style: GoogleFonts.roboto(textStyle: headerboldblue1),
+            ),
+            Text(
+              "Lecturer",
+              style: GoogleFonts.roboto(),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              child: Form(
+                  key: _formkey,
+                  child: Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
                         ),
-                      ),
-                      height: 50,
-                      width: 300,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                      ),
-                      margin: const EdgeInsets.only(top: 20),
-                      child: Center(
-                        child: TextFormField(
-                          // controller: _passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Confirm Password',
+                        child: Center(
+                          child: TextFormField(
+                            // controller: _staffIdController,
+                            decoration: InputDecoration(
+                              labelText: 'Staff Mail',
+                            ),
                           ),
-                          // validator: _validatePassword(),
                         ),
+                        height: 50,
+                        width: 300,
                       ),
-                      height: 50,
-                      width: 300,
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => LecturerDashboard())),
-                      child: Container(
+                      Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10,
                         ),
                         margin: const EdgeInsets.only(top: 20),
                         child: Center(
-                          child: Text(
-                            "Update",
-                            style: GoogleFonts.montserrat(
-                                textStyle: subheaderBoldbtnwhite),
+                          child: TextFormField(
+                            // controller: _passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              labelText: 'Password',
+                            ),
+                            // validator: _validatePassword(),
                           ),
                         ),
                         height: 50,
                         width: 300,
-                        decoration: BoxDecoration(
-                            color: AppColor.mainBlue,
-                            borderRadius: BorderRadius.circular(10)),
                       ),
-                    )
-                  ],
-                )),
-          )
-        ],
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                        ),
+                        margin: const EdgeInsets.only(top: 20),
+                        child: Center(
+                          child: TextFormField(
+                            // controller: _passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              labelText: 'Confirm Password',
+                            ),
+                            // validator: _validatePassword(),
+                          ),
+                        ),
+                        height: 50,
+                        width: 300,
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LecturerDashboard())),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
+                          margin: const EdgeInsets.only(top: 20),
+                          child: Center(
+                            child: Text(
+                              "Update",
+                              style: GoogleFonts.montserrat(
+                                  textStyle: subheaderBoldbtnwhite),
+                            ),
+                          ),
+                          height: 50,
+                          width: 300,
+                          decoration: BoxDecoration(
+                              color: AppColor.mainBlue,
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      )
+                    ],
+                  )),
+            )
+          ],
+        ),
       ),
     );
   }
