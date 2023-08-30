@@ -36,11 +36,11 @@ List<DashboardCard> cardcontent = [
       title: "Announce \nment",
       cardIcon: FontAwesomeIcons.bullhorn,
       cardColor: AppColor.mainBlue),
-  DashboardCard(
-      navigate: Schedules(),
-      title: "Schedules",
-      cardIcon: FontAwesomeIcons.clockRotateLeft,
-      cardColor: AppColor.mainBlue),
+  // DashboardCard(
+  //     navigate: Schedules(),
+  //     title: "Schedules",
+  //     cardIcon: FontAwesomeIcons.clockRotateLeft,
+  //     cardColor: AppColor.mainBlue),
   DashboardCard(
       navigate: ProfilePage(),
       title: "Profile",
@@ -74,15 +74,19 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
               SizedBox(
                 width: 110,
               ),
-              Container(
-                margin: const EdgeInsets.only(right: 20),
-                height: 35,
-                width: 35,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/catprofile.JPG"),
-                        fit: BoxFit.cover),
-                    borderRadius: BorderRadius.circular(20)),
+              GestureDetector(
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfilePage())),
+                child: Container(
+                  margin: const EdgeInsets.only(right: 20),
+                  height: 35,
+                  width: 35,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/catprofile.JPG"),
+                          fit: BoxFit.cover),
+                      borderRadius: BorderRadius.circular(20)),
+                ),
               )
             ],
             backgroundColor: Colors.white,
