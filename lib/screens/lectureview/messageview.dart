@@ -13,7 +13,9 @@ class MessageView extends StatefulWidget {
 
 class _MessageViewState extends State<MessageView> {
   List<MessageModule> mess = [
-    MessageModule("assets/profile.jpg", "Mathematees", "I don't get you sir ")
+    MessageModule("assets/profile.jpg", "Mathematees", "I don't get you sir "),
+    MessageModule("assets/profile.jpg", "Mathematees", "I don't get you sir "),
+    MessageModule("assets/profile.jpg", "Mathematees", "I don't get you sir "),
   ];
   @override
   Widget build(BuildContext context) {
@@ -37,28 +39,48 @@ class _MessageViewState extends State<MessageView> {
           children: [
             Row(
               children: [
-                            Container(
-              margin: const EdgeInsets.only(left: 10),
-              child: Text(
-                "All Messages",
-                style: GoogleFonts.roboto(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                    color: AppColor.btnBlue),
-              ),
-            ),
-            Container(
-              height: 60,
-              width: 60,
-              decoration: BoxDecoration(
-                color: AppColor.btnBlue,
-                
-              ),
-            )
-
+                Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  child: Text(
+                    "All Messages",
+                    style: GoogleFonts.roboto(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: AppColor.btnBlue),
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.only(bottom: 2),
+                  height: 20,
+                  width: 30,
+                  decoration: BoxDecoration(
+                      color: AppColor.mainBlueOpc,
+                      borderRadius: BorderRadius.circular(12)),
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                      left: 10,
+                    ),
+                    child: Text(
+                      mess.length.toString(),
+                      style: GoogleFonts.roboto(
+                          color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
               ],
             ),
-
+            Expanded(
+              child: ListView(
+                children: [
+                  ListTile(
+                    title: Text(
+                      " mess[0].message",
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),
