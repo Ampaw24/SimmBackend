@@ -1,12 +1,16 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
+
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
-
+import 'package:simbackend/utils/utils.dart';
 import 'lecturedashboard.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -17,6 +21,14 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   GlobalKey _formkey = GlobalKey();
+  Uint8List? _image;
+  void _selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +51,16 @@ class _ProfilePageState extends State<ProfilePage> {
             Stack(
               children: [
                 Center(
-                  child: Container(
+                  child:_image != null ? Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    height: 120,
+                    width: 120,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(60),
+                        image: DecorationImage(
+                            image: MemoryImage(_image!),
+                            fit: BoxFit.cover)),
+                  ) : Container(
                     margin: const EdgeInsets.only(top: 30),
                     height: 120,
                     width: 120,
@@ -53,20 +74,23 @@ class _ProfilePageState extends State<ProfilePage> {
                 Positioned(
                     top: 110,
                     left: 210,
-                    child: Container(
-                      child: Center(
-                        child: Icon(
-                          FontAwesomeIcons.pencil,
-                          weight: 10,
-                          color: Colors.white,
-                          size: 12,
+                    child: GestureDetector(
+                      onTap: _selectImage,
+                      child: Container(
+                        child: Center(
+                          child: Icon(
+                            Icons.add_a_photo,
+                            weight: 10,
+                            color: Colors.white,
+                            size: 15,
+                          ),
                         ),
-                      ),
-                      height: 30,
-                      width: 30,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: AppColor.mainBlue,
+                        height: 30,
+                        width: 30,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: AppColor.mainBlue,
+                        ),
                       ),
                     )),
               ],
