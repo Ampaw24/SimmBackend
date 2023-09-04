@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
+import 'department/departmentlogin.dart';
 import 'lectureview/lecloginpage.dart';
 
 class SelectPage extends StatefulWidget {
@@ -111,7 +112,7 @@ class _SelectPageState extends State<SelectPage> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              LecturerLogin())),
+                                              DepartmentLogin())),
                                   child: Container(
                                     margin: const EdgeInsets.only(top: 20),
                                     child: Center(
