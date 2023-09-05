@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "422749566353",
+    "project_id": "simapp-67271",
+    "storage_bucket": "simapp-67271.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:422749566353:android:74b59fb6531e15028f5630",
+        "android_client_info": {
+          "package_name": "com.example.simbackend"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "422749566353-tie4ga446594m7fi9faq81cc719dbqsv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCljh1jcHFDTjkCkBrFvgH2VWUJq-1mcB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "422749566353-tie4ga446594m7fi9faq81cc719dbqsv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

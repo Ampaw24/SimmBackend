@@ -22,11 +22,6 @@ class DepartmentDashboard extends StatefulWidget {
 
 List<DashboardCard> cardcontent = [
   DashboardCard(
-      navigate: ManageAssignment(),
-      title: "Assignment",
-      cardIcon: FontAwesomeIcons.fileText,
-      cardColor: AppColor.mainBlue),
-  DashboardCard(
       navigate: MessageView(),
       title: "Messages",
       cardIcon: FontAwesomeIcons.message,
@@ -35,6 +30,11 @@ List<DashboardCard> cardcontent = [
       navigate: Annoucements(),
       title: "Announce \nment",
       cardIcon: FontAwesomeIcons.bullhorn,
+      cardColor: AppColor.mainBlue),
+  DashboardCard(
+      navigate: ManageAssignment(),
+      title: "Assignment",
+      cardIcon: FontAwesomeIcons.fileText,
       cardColor: AppColor.mainBlue),
   DashboardCard(
       navigate: ProfilePage(),
