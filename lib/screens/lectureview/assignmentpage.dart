@@ -1,6 +1,8 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/utils/colors.dart';
@@ -18,6 +20,7 @@ class _ManageAssignmentState extends State<ManageAssignment> {
   TextEditingController assignmentTitleController = TextEditingController();
   TextEditingController assignmentDescriptionController =
       TextEditingController();
+  TextEditingController file = TextEditingController();
 
   Future<void> _pickFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -29,6 +32,14 @@ class _ManageAssignmentState extends State<ManageAssignment> {
     } else {
       // User canceled the file picker.
     }
+  }
+
+  late DatabaseReference dbRef;
+
+  @override
+  void initState() {
+    super.initState();
+    dbRef = FirebaseDatabase.instance.ref().child('Assignment');
   }
 
   @override
@@ -124,6 +135,50 @@ class _ManageAssignmentState extends State<ManageAssignment> {
               ),
 
               GestureDetector(
+                onTap: () {
+                  Map<String, String> assignment = {
+                    'title': assignmentTitleController.text,
+                    'description': assignmentDescriptionController.text,
+                  };
+                  dbRef.push().set(assignment).then((_) {
+                    print("Data Pushed succefulluy");
+                    Flushbar(
+                      title: "Assignment Sent",
+                      message:
+                          "Assignment ${assignmentTitleController.text} posted",
+                      duration: Duration(seconds: 4),
+                      icon: Icon(Icons.done_outline_rounded,color: Colors.white),
+                      backgroundColor: Color.fromARGB(255, 22, 149, 195).withOpacity(0.6),
+                      flushbarPosition: FlushbarPosition.TOP,
+                      animationDuration: Duration(milliseconds: 500),
+                      borderRadius: BorderRadius.circular(10),
+                      margin: EdgeInsets.all(8.0),
+                      onTap: (flushbar) {
+                        flushbar.dismiss();
+                      },
+                    ).show(context);
+
+                    assignmentTitleController.text = "";
+                    assignmentDescriptionController.text = "";
+
+                  }).catchError((_) {
+                   Flushbar(
+                      title: "Assignment Post Error",
+                      message:
+                          "Assignment ${assignmentTitleController.text} Error",
+                      duration: Duration(seconds: 4),
+                      icon: Icon(Icons.done_outline_rounded,color: Colors.white),
+                      backgroundColor: Color.fromARGB(255, 237, 51, 51).withOpacity(0.6),
+                      flushbarPosition: FlushbarPosition.TOP,
+                      animationDuration: Duration(milliseconds: 300),
+                      borderRadius: BorderRadius.circular(10),
+                      margin: EdgeInsets.all(8.0),
+                      onTap: (flushbar) {
+                        flushbar.dismiss();
+                      },
+                    ).show(context);
+                  });
+                },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
