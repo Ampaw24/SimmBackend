@@ -1,9 +1,12 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, sort_child_properties_last, unnecessary_null_comparison, use_build_context_synchronously
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simbackend/firebase/firebaseauth.dart';
 import 'package:simbackend/screens/lectureview/lecturedashboard.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LecturerLogin extends StatefulWidget {
   LecturerLogin({super.key});
@@ -14,24 +17,11 @@ class LecturerLogin extends StatefulWidget {
 
 class _LecturerLoginState extends State<LecturerLogin> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final TextEditingController _staffIdController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
 
-  String? _validatePassword(String value) {
-    if (value.isEmpty) {
-      return 'Password is required';
-    }
-    if (value.length < 6) {
-      return 'Password must be at least 6 characters long';
-    }
-    return null;
-  }
-
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {}
-  }
+  final _auth = FirebaseAuth.instance;
+  bool _isloading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -166,11 +156,28 @@ class _LecturerLoginState extends State<LecturerLogin> {
                                     width: 300,
                                   ),
                                   GestureDetector(
-                                    onTap: () => Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LecturerDashboard())),
+                                    onTap: () async {
+                                      try {
+                                        setState(() {
+                                          _isloading =
+                                              true; // Start showing the loader
+                                        });
+                                        final user = await _auth
+                                            .signInWithEmailAndPassword(
+                                                email: _staffIdController.text,
+                                                password:
+                                                    _passwordController.text);
+                                        if (user != null) {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LecturerDashboard()));
+                                        }
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 10,
@@ -207,6 +214,8 @@ class _LecturerLoginState extends State<LecturerLogin> {
                               ),
                             ),
                           ),
+                                      if (_isloading)
+              Center(child: CircularProgressIndicator())
                         ],
                       ),
                     ),
@@ -220,3 +229,21 @@ class _LecturerLoginState extends State<LecturerLogin> {
     );
   }
 }
+
+
+//  try {
+//                                         final user = await _auth
+//                                             .signInWithEmailAndPassword(
+//                                                 email: _staffIdController.text,
+//                                                 password:
+//                                                     _passwordController.text);
+//                                         if (user != null) {
+//                                           Navigator.pushReplacement(
+//                                               context,
+//                                               MaterialPageRoute(
+//                                                   builder: (context) =>
+//                                                       LecturerDashboard()));
+//                                         }
+//                                       } catch (e) {
+//                                         print(e);
+//                                       }

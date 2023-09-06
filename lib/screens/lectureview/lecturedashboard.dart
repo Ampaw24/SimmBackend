@@ -1,5 +1,6 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,6 +50,9 @@ List<DashboardCard> cardcontent = [
 ];
 
 class _LecturerDashboardState extends State<LecturerDashboard> {
+  
+  @override
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
