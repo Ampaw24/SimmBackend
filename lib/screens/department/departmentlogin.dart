@@ -1,10 +1,13 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, sort_child_properties_last
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, sort_child_properties_last, unnecessary_null_comparison, use_build_context_synchronously
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:simbackend/screens/department/departmenthome.dart';
+import 'package:simbackend/firebase/firebaseauth.dart';
+import 'package:simbackend/screens/department/resgisterdepartment.dart';
 import 'package:simbackend/screens/lectureview/lecturedashboard.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class DepartmentLogin extends StatefulWidget {
   DepartmentLogin({super.key});
@@ -15,24 +18,11 @@ class DepartmentLogin extends StatefulWidget {
 
 class _DepartmentLoginState extends State<DepartmentLogin> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final TextEditingController _staffIdController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
 
-  String? _validatePassword(String value) {
-    if (value.isEmpty) {
-      return 'Password is required';
-    }
-    if (value.length < 6) {
-      return 'Password must be at least 6 characters long';
-    }
-    return null;
-  }
-
-  void _submitForm() {
-    if (_formKey.currentState!.validate()) {}
-  }
+  final _auth = FirebaseAuth.instance;
+  bool _isloading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +76,7 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                           Container(
                             child: Center(
                               child: Text(
-                                "Enter Login Credentials...",
+                                "Enter  Login Credentials...",
                                 style: GoogleFonts.montserrat(
                                     textStyle: subheaderBold),
                               ),
@@ -113,7 +103,7 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 40,
+                                    height: 20,
                                   ),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
@@ -133,7 +123,7 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                                         ),
                                         validator: (value) {
                                           if (value!.isEmpty) {
-                                            return 'Department ID is required';
+                                            return 'Department special Id is required';
                                           }
                                           return null;
                                         },
@@ -167,11 +157,28 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                                     width: 300,
                                   ),
                                   GestureDetector(
-                                    onTap: () => Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DepartmentDashboard())),
+                                    onTap: () async {
+                                      try {
+                                        setState(() {
+                                          _isloading =
+                                              true; // Start showing the loader
+                                        });
+                                        final user = await _auth
+                                            .signInWithEmailAndPassword(
+                                                email: _staffIdController.text,
+                                                password:
+                                                    _passwordController.text);
+                                        if (user != null) {
+                                          Navigator.pushReplacement(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LecturerDashboard()));
+                                        }
+                                      } catch (e) {
+                                        print(e);
+                                      }
+                                    },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                         horizontal: 10,
@@ -191,7 +198,27 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                                           borderRadius:
                                               BorderRadius.circular(10)),
                                     ),
-                                  )
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                RegistrationScreen())),
+                                    child: Center(
+                                      child: Text(
+                                        "--Add Department Account--",
+                                        style: GoogleFonts.lato(
+                                            textStyle: TextStyle(
+                                                color: AppColor.btnBlue,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w500)),
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                               decoration: BoxDecoration(
@@ -208,6 +235,8 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                               ),
                             ),
                           ),
+                          if (_isloading)
+                            Center(child: CircularProgressIndicator())
                         ],
                       ),
                     ),
@@ -221,3 +250,21 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
     );
   }
 }
+
+
+//  try {
+//                                         final user = await _auth
+//                                             .signInWithEmailAndPassword(
+//                                                 email: _staffIdController.text,
+//                                                 password:
+//                                                     _passwordController.text);
+//                                         if (user != null) {
+//                                           Navigator.pushReplacement(
+//                                               context,
+//                                               MaterialPageRoute(
+//                                                   builder: (context) =>
+//                                                       LecturerDashboard()));
+//                                         }
+//                                       } catch (e) {
+//                                         print(e);
+//                                       }

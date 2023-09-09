@@ -8,6 +8,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simbackend/firebase/firebaseapi.dart';
 import 'package:simbackend/utils/colors.dart';
 
 import '../text.dart';
@@ -23,7 +24,7 @@ class _ManageAssignmentState extends State<ManageAssignment> {
   TextEditingController assignmentTitleController = TextEditingController();
   TextEditingController assignmentDescriptionController =
       TextEditingController();
-  TextEditingController file = TextEditingController();
+
   final storageRef = FirebaseStorage.instance.ref();
 
   String selectedFileName = "Attach File";
@@ -31,6 +32,7 @@ class _ManageAssignmentState extends State<ManageAssignment> {
   PlatformFile? pickedFile;
   bool isLoading = false;
   File? fileToDisplay;
+  List<String> _allowedExtentions = ["doc", "pdf", "docx", "jpg"];
 
   Future<void> _pickFile() async {
     try {
@@ -38,15 +40,20 @@ class _ManageAssignmentState extends State<ManageAssignment> {
         isLoading = true;
       });
       FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        allowedExtensions: ["doc", "pdf", "docx", "jpg"],
         type: FileType.any,
         allowCompression: true,
       );
+
       if (result != null) {
-        PlatformFile file = result.files.first;
-        filename = result.files.first.name;
+        final filePath = result.files.single.path!;
         pickedFile = result.files.first;
+        filename = result.files.first.name;
+
+        setState(() => fileToDisplay = File(filePath));
+
         fileToDisplay = File(pickedFile!.path.toString());
-        print("Print file: ${filename}");
       } else {}
       setState(() {
         isLoading = false;
@@ -55,6 +62,14 @@ class _ManageAssignmentState extends State<ManageAssignment> {
   }
 
   late DatabaseReference dbRef;
+  Future uploadFile() async {
+    if (fileToDisplay == null) {
+      final fileName = fileToDisplay!.path;
+      final destination = 'Assignment/${fileName}';
+
+      FirebaseApi.uploadFile(destination, fileToDisplay!);
+    }
+  }
 
   @override
   void initState() {
@@ -64,6 +79,8 @@ class _ManageAssignmentState extends State<ManageAssignment> {
 
   @override
   Widget build(BuildContext context) {
+    final sfileName =
+        fileToDisplay != null ? fileToDisplay!.path : "No file selected";
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -140,9 +157,8 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                             Container(
                               height: 30,
                               width: 300,
-                              color: Colors.red,
                               child: Center(
-                                child: Text(filename.toString()),
+                                child: Text(sfileName),
                               ),
                             ),
                             GestureDetector(
@@ -188,11 +204,10 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                                   'description':
                                       assignmentDescriptionController.text,
                                 };
-                                final selctedFile =
-                                    storageRef.child(pickedFile.toString());
-                                    
+                                uploadFile();
+
                                 dbRef.push().set(assignment).then((_) {
-                                  print("Data Pushed succefulluy");
+                          
                                   Flushbar(
                                     title: "Assignment Sent",
                                     message:
