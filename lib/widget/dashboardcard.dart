@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../screens/text.dart';
@@ -21,8 +22,7 @@ class DashboarddCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context, MaterialPageRoute(builder: (context) => navigatePage)),
+      onTap: () => Get.to(navigatePage,transition: Transition.zoom),
       child: Container(
         margin: const EdgeInsets.only(top: 10, left: 5),
         width: 150,

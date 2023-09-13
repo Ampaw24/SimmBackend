@@ -1,5 +1,4 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,14 +6,15 @@ import 'package:simbackend/screens/lectureview/announcements.dart';
 import 'package:simbackend/screens/lectureview/assignmentpage.dart';
 import 'package:simbackend/screens/lectureview/messageview.dart';
 import 'package:simbackend/screens/lectureview/profile.dart';
-import 'package:simbackend/screens/lectureview/schedulespage.dart';
 import '../../modules/dashboardmodule.dart';
 import '../../utils/colors.dart';
 import '../../widget/dashboardcard.dart';
+import '../../widget/navdrawer.dart';
 import '../text.dart';
 
 class DepartmentDashboard extends StatefulWidget {
-  const DepartmentDashboard({super.key});
+  String departmentMail;
+  DepartmentDashboard({super.key, required this.departmentMail});
 
   @override
   State<DepartmentDashboard> createState() => _DepartmentDashboardState();
@@ -28,13 +28,23 @@ List<DashboardCard> cardcontent = [
       cardColor: AppColor.mainBlue),
   DashboardCard(
       navigate: Annoucements(),
-      title: "Announce \nment",
+      title: "Announce \nments",
       cardIcon: FontAwesomeIcons.bullhorn,
       cardColor: AppColor.mainBlue),
   DashboardCard(
       navigate: ManageAssignment(),
-      title: "Assignment",
+      title: "Results",
       cardIcon: FontAwesomeIcons.fileText,
+      cardColor: AppColor.mainBlue),
+  DashboardCard(
+      navigate: ProfilePage(),
+      title: "Lecturers",
+      cardIcon: FontAwesomeIcons.userTie,
+      cardColor: AppColor.mainBlue),
+  DashboardCard(
+      navigate: ManageAssignment(),
+      title: "TimeTable",
+      cardIcon: FontAwesomeIcons.squarePollVertical,
       cardColor: AppColor.mainBlue),
   DashboardCard(
       navigate: ProfilePage(),
@@ -44,28 +54,22 @@ List<DashboardCard> cardcontent = [
 ];
 
 class _DepartmentDashboardState extends State<DepartmentDashboard> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: NavDrawer(mail: widget.departmentMail),
       backgroundColor: Colors.white,
       appBar: PreferredSize(
           child: AppBar(
-            leading: Container(),
+            leading: GestureDetector(
+                onTap: () {
+                  _scaffoldKey.currentState!.openDrawer();
+                },
+                child: Icon(Icons.menu_outlined)),
+            // leading: IconButton(onPressed: onPressed, icon: icon),
             actions: [
-              Text(
-                "Hello,",
-                style: GoogleFonts.montserrat(fontSize: 23),
-              ),
-              SizedBox(
-                width: 7,
-              ),
-              Text(
-                "Lecturer",
-                style: GoogleFonts.montserrat(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: AppColor.btnBlue),
-              ),
               SizedBox(
                 width: 110,
               ),

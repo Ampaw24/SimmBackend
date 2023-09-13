@@ -50,9 +50,7 @@ List<DashboardCard> cardcontent = [
 ];
 
 class _LecturerDashboardState extends State<LecturerDashboard> {
-  
   @override
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

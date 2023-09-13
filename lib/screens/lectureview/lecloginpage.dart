@@ -1,8 +1,11 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, sort_child_properties_last, unnecessary_null_comparison, use_build_context_synchronously
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/firebase/firebaseauth.dart';
+import 'package:simbackend/screens/department/departmenthome.dart';
 import 'package:simbackend/screens/lectureview/lecturedashboard.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
@@ -168,11 +171,15 @@ class _LecturerLoginState extends State<LecturerLogin> {
                                                 password:
                                                     _passwordController.text);
                                         if (user != null) {
-                                          Navigator.pushReplacement(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      LecturerDashboard()));
+                                          Get.to(
+                                            LecturerDashboard(),
+                                            transition: Transition.leftToRight
+                                            );
+                                          // Navigator.pushReplacement(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //         builder: (context) =>
+                                          //             LecturerDashboard()));
                                         }
                                       } catch (e) {
                                         print(e);
@@ -214,8 +221,8 @@ class _LecturerLoginState extends State<LecturerLogin> {
                               ),
                             ),
                           ),
-                                      if (_isloading)
-              Center(child: CircularProgressIndicator())
+                          if (_isloading)
+                            Center(child: CircularProgressIndicator())
                         ],
                       ),
                     ),
