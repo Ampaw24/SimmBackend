@@ -2,6 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simbackend/screens/department/lecturer/lecturer.dart';
+import 'package:simbackend/screens/department/profileupdate.dart';
+import 'package:simbackend/screens/department/results/departmentresult.dart';
 import 'package:simbackend/screens/lectureview/announcements.dart';
 import 'package:simbackend/screens/lectureview/assignmentpage.dart';
 import 'package:simbackend/screens/lectureview/messageview.dart';
@@ -11,6 +14,8 @@ import '../../utils/colors.dart';
 import '../../widget/dashboardcard.dart';
 import '../../widget/navdrawer.dart';
 import '../text.dart';
+import 'annocement.dart';
+import 'messages.dart';
 
 class DepartmentDashboard extends StatefulWidget {
   String departmentMail;
@@ -22,22 +27,22 @@ class DepartmentDashboard extends StatefulWidget {
 
 List<DashboardCard> cardcontent = [
   DashboardCard(
-      navigate: MessageView(),
+      navigate: DepartmentMessages(),
       title: "Messages",
       cardIcon: FontAwesomeIcons.message,
       cardColor: AppColor.mainBlue),
   DashboardCard(
-      navigate: Annoucements(),
+      navigate: DepartmentAnnoucements(),
       title: "Announce \nments",
       cardIcon: FontAwesomeIcons.bullhorn,
       cardColor: AppColor.mainBlue),
   DashboardCard(
-      navigate: ManageAssignment(),
+      navigate: ResultUpload(),
       title: "Results",
       cardIcon: FontAwesomeIcons.fileText,
       cardColor: AppColor.mainBlue),
   DashboardCard(
-      navigate: ProfilePage(),
+      navigate: BTMnav(pageIndex: 1),
       title: "Lecturers",
       cardIcon: FontAwesomeIcons.userTie,
       cardColor: AppColor.mainBlue),
@@ -47,7 +52,7 @@ List<DashboardCard> cardcontent = [
       cardIcon: FontAwesomeIcons.squarePollVertical,
       cardColor: AppColor.mainBlue),
   DashboardCard(
-      navigate: ProfilePage(),
+      navigate: ProfileUpdate(),
       title: "Profile",
       cardIcon: FontAwesomeIcons.userPen,
       cardColor: AppColor.mainBlue),
@@ -97,8 +102,8 @@ class _DepartmentDashboardState extends State<DepartmentDashboard> {
           Container(
             margin: const EdgeInsets.only(left: 15),
             child: Text(
-              "Dashboard",
-              style: GoogleFonts.montserrat(textStyle: headerbold1),
+              " Dashboard",
+              style: GoogleFonts.montserrat(textStyle: headerboldblue2),
             ),
           ),
           Expanded(
