@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:simbackend/screens/department/lecturer/managelecturer.dart';
 import '../../../core/colors.dart';
 import 'addlecturer.dart';
 
@@ -12,7 +14,8 @@ class BTMnav extends StatefulWidget {
 
 class _BTMnavState extends State<BTMnav> {
   final pages = [
-   LecturerForm(),
+    LecturerForm(),
+    ManageLecturer(),
   ];
   int _pageIndex = 1;
 
@@ -41,36 +44,30 @@ class _BTMnavState extends State<BTMnav> {
             destinations: [
               NavigationDestination(
                 icon: Icon(
-                  Icons.location_on,
+                  size: 15,
+                  FontAwesomeIcons.chalkboardUser,
                   color: Colors.white,
                 ),
                 selectedIcon: Icon(
-                  Icons.location_on,
+                  size: 15,
+                  FontAwesomeIcons.chalkboardUser,
                   color: Colors.black,
                 ),
-                label: 'Sites',
+                label: 'Add Lec',
               ),
               NavigationDestination(
                 icon: Icon(
-                  Icons.grid_view_sharp,
+                  size: 15,
+                  FontAwesomeIcons.barsProgress,
                   color: Colors.white,
                 ),
                 selectedIcon: Icon(
-                  Icons.add,
+                  size: 15,
+                  FontAwesomeIcons.barsProgress,
                   color: Colors.black,
                 ),
-                label: 'Add Site',
+                label: 'Manage',
               ),
-              NavigationDestination(
-                  icon: Icon(
-                    Icons.lock,
-                    color: Colors.white,
-                  ),
-                  selectedIcon: Icon(
-                    Icons.lock,
-                    color: Colors.black,
-                  ),
-                  label: 'Allocate'),
             ]),
       ),
     );

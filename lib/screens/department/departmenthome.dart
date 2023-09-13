@@ -42,7 +42,7 @@ List<DashboardCard> cardcontent = [
       cardIcon: FontAwesomeIcons.fileText,
       cardColor: AppColor.mainBlue),
   DashboardCard(
-      navigate: BTMnav(pageIndex: 1),
+      navigate: BTMnav(pageIndex: 0),
       title: "Lecturers",
       cardIcon: FontAwesomeIcons.userTie,
       cardColor: AppColor.mainBlue),

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:simbackend/screens/selectpage.dart';
 import 'package:get/get.dart';
+import 'package:simbackend/utils/colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Student Info Manager',
       theme: ThemeData(
+        primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
       home: SelectPage(),
