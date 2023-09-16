@@ -2,10 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simbackend/screens/lectureview/lecturedashboard.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
 import 'department/departmentlogin.dart';
 import 'lectureview/lecloginpage.dart';
+import 'department/departmenthome.dart';
+import 'package:get/get.dart';
 
 class SelectPage extends StatefulWidget {
   const SelectPage({super.key});
@@ -86,11 +89,8 @@ class _SelectPageState extends State<SelectPage> {
                                   height: 30,
                                 ),
                                 GestureDetector(
-                                  onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              LecturerLogin())),
+                                  onTap: () => Get.to(LecturerDashboard(),
+                                      transition: Transition.downToUp),
                                   child: Container(
                                     child: Center(
                                       child: Text(
@@ -108,11 +108,8 @@ class _SelectPageState extends State<SelectPage> {
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () => Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DepartmentLogin())),
+                                  onTap: () => Get.to(DepartmentLogin(),
+                                      transition: Transition.downToUp),
                                   child: Container(
                                     margin: const EdgeInsets.only(top: 20),
                                     child: Center(

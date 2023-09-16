@@ -12,6 +12,7 @@ import 'package:simbackend/firebase/firebaseapi.dart';
 import 'package:simbackend/utils/colors.dart';
 
 import '../text.dart';
+import 'manageAssignment.dart';
 
 class ManageAssignment extends StatefulWidget {
   const ManageAssignment({super.key});
@@ -63,7 +64,6 @@ class _ManageAssignmentState extends State<ManageAssignment> {
 
   late DatabaseReference dbRef;
 
-  
   Future uploadFile() async {
     if (fileToDisplay == null) {
       final fileName = fileToDisplay!.path;
@@ -209,7 +209,6 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                                 uploadFile();
 
                                 dbRef.push().set(assignment).then((_) {
-                          
                                   Flushbar(
                                     title: "Assignment Sent",
                                     message:
@@ -279,7 +278,7 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                     ),
                   ),
             Tab(
-              child: Container(),
+              child: Assignments(),
             )
           ],
         ),

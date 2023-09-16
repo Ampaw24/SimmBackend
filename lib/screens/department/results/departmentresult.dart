@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:simbackend/core/text.dart';
 import '../../../api/firebase_api.dart';
 import '../../../widget/button_widget.dart';
 import 'package:flutter/services.dart';
@@ -26,6 +27,13 @@ class _ResultUploadState extends State<ResultUpload> {
   Widget build(BuildContext context) {
     final fileName = file != null ? basename(file!.path) : 'No File Selected';
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          "Result Notice",
+          style: headerboldblue2,
+        ),
+      ),
       body: Container(
         padding: EdgeInsets.all(32),
         child: Center(

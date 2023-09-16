@@ -10,6 +10,7 @@ import 'package:simbackend/screens/lectureview/lecturedashboard.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 class DepartmentLogin extends StatefulWidget {
   DepartmentLogin({super.key});
@@ -171,8 +172,12 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                                                 password:
                                                     _passwordController.text);
                                         if (user != null) {
-                                          Get.to(DepartmentDashboard(departmentMail:_staffIdController.text ,),
-                                          transition:Transition.downToUp,
+                                          Get.to(
+                                            DepartmentDashboard(
+                                              departmentMail:
+                                                  _staffIdController.text,
+                                            ),
+                                            transition: Transition.downToUp,
                                           );
                                           // Navigator.pushReplacement(
                                           //     context,
@@ -208,11 +213,9 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                                     height: 5,
                                   ),
                                   GestureDetector(
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                RegistrationScreen())),
+                                    onTap: () => Get.to(RegistrationScreen(),
+                                        transition:
+                                            Transition.rightToLeftWithFade),
                                     child: Center(
                                       child: Text(
                                         "--Add Department Account--",

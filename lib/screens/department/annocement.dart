@@ -151,14 +151,3 @@ class _DepartmentAnnoucementsState extends State<DepartmentAnnoucements> {
     );
   }
 }
-  // onPressed: () {
-  //                   // Handle the announcement submission here
-  //                   String announcement = _announcementController.text;
-  //                   if (announcement.isNotEmpty) {
-  //                     // You can send the announcement to a server, database, or perform any desired action.
-  //                     // For now, we'll just print it.
-  //                     print('Announcement: $announcement');
-  //                     // Optionally, you can clear the text field.
-  //                     _announcementController.clear();
-  //                   }
-  //                 },

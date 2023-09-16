@@ -1,106 +1,261 @@
-// ignore_for_file: unused_field
+// ignore_for_file: sort_child_properties_last, prefer_const_constructors, unnecessary_null_comparison, unused_local_variable
 
 import 'dart:io';
+
+import 'package:another_flushbar/flushbar.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import '../../../api/firebase_api.dart';
-import '../../../widget/button_widget.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:simbackend/firebase/firebaseapi.dart';
+import 'package:simbackend/utils/colors.dart';
 
-class ResultUpload extends StatefulWidget {
-  const ResultUpload({super.key});
+import '../../../core/text.dart';
+
+class TimetablePage extends StatefulWidget {
+  const TimetablePage({super.key});
 
   @override
-  State<ResultUpload> createState() => _ResultUploadState();
+  State<TimetablePage> createState() => _TimetablePageState();
 }
 
-class _ResultUploadState extends State<ResultUpload> {
-  File? file;
-  // ignore: prefer_const_declarations
-  static final String title = 'Firebase Upload';
-  UploadTask? task;
+class _TimetablePageState extends State<TimetablePage> {
+  TextEditingController assignmentTitleController = TextEditingController();
+  TextEditingController assignmentDescriptionController =
+      TextEditingController();
+
+  final storageRef = FirebaseStorage.instance.ref();
+
+  String selectedFileName = "Attach File";
+  String? filename;
+  PlatformFile? pickedFile;
+  bool isLoading = false;
+  File? fileToDisplay;
+  List<String> _allowedExtentions = ["doc", "pdf", "docx", "jpg"];
+
+  Future<void> _pickFile() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        allowedExtensions: ["doc", "pdf", "docx", "jpg"],
+        type: FileType.any,
+        allowCompression: true,
+      );
+
+      if (result != null) {
+        final filePath = result.files.single.path!;
+        pickedFile = result.files.first;
+        filename = result.files.first.name;
+
+        setState(() => fileToDisplay = File(filePath));
+
+        fileToDisplay = File(pickedFile!.path.toString());
+      } else {}
+      setState(() {
+        isLoading = false;
+      });
+    } catch (e) {}
+  }
+
+  late DatabaseReference dbRef;
+
+  Future uploadFile() async {
+    if (fileToDisplay == null) {
+      final fileName = fileToDisplay!.path;
+      final destination = 'Assignment/${fileName}';
+
+      FirebaseApi.uploadFile(destination, fileToDisplay!);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    dbRef = FirebaseDatabase.instance.ref().child('Assignment');
+  }
 
   @override
   Widget build(BuildContext context) {
-    final fileName = file != null ? basename(file!.path) : 'No File Selected';
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(32),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ButtonWidget(
-                text: 'Select File',
-                icon: Icons.attach_file,
-                onClicked: selectFile,
+    final sfileName =
+        fileToDisplay != null ? fileToDisplay!.path : "No file selected";
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+            preferredSize: Size.fromHeight(100),
+            child: AppBar(
+              centerTitle: true,
+              bottom: TabBar(indicatorColor: AppColor.btnBlue, tabs: [
+                Text(
+                  "Upload Timetable",
+                  style: GoogleFonts.montserrat(),
+                ),
+                Text(
+                  "History",
+                  style: GoogleFonts.montserrat(),
+                )
+              ]),
+              title: Text(
+                "TimeTables",
+                style: GoogleFonts.montserrat(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    color: AppColor.btnBlue),
               ),
-              SizedBox(height: 8),
-              Text(
-                fileName,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            )),
+        body: TabBarView(
+          children: [
+            Tab(
+              child: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Program',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: assignmentTitleController,
+                        decoration: InputDecoration(
+                            hintText: 'Enter Program.. e.g computer Science',
+                            hintStyle: TextStyle(
+                                fontSize: 10,
+                                color: const Color.fromARGB(255, 95, 95, 95),
+                                fontStyle: FontStyle.italic)),
+                      ),
+                      SizedBox(height: 30),
+                      SizedBox(height: 16),
+                      Container(
+                        height: 30,
+                        width: 300,
+                        child: Center(
+                          child: Text(sfileName),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: _pickFile,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
+                          margin: const EdgeInsets.only(top: 20),
+                          child: Center(
+                            child: Row(
+                              children: [
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Icon(
+                                  Icons.attach_file,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  "Choose File",
+                                  style: GoogleFonts.montserrat(
+                                      textStyle: subheaderBoldbtnwhite),
+                                ),
+                              ],
+                            ),
+                          ),
+                          height: 50,
+                          width: 300,
+                          decoration: BoxDecoration(
+                              color: AppColor.mainBlue,
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Map<String, String> assignment = {
+                            'title': assignmentTitleController.text,
+                            'description': assignmentDescriptionController.text,
+                          };
+                          uploadFile();
+
+                          dbRef.push().set(assignment).then((_) {
+                            Flushbar(
+                              title: "Assignment Sent",
+                              message:
+                                  "Assignment ${assignmentTitleController.text} posted",
+                              duration: Duration(seconds: 4),
+                              icon: Icon(Icons.done_outline_rounded,
+                                  color: Colors.white),
+                              backgroundColor: Color.fromARGB(255, 22, 149, 195)
+                                  .withOpacity(0.6),
+                              flushbarPosition: FlushbarPosition.TOP,
+                              animationDuration: Duration(milliseconds: 500),
+                              borderRadius: BorderRadius.circular(10),
+                              margin: EdgeInsets.all(8.0),
+                              onTap: (flushbar) {
+                                flushbar.dismiss();
+                              },
+                            ).show(context);
+
+                            assignmentTitleController.text = "";
+                            assignmentDescriptionController.text = "";
+                          }).catchError((_) {
+                            Flushbar(
+                              title: "Assignment Post Error",
+                              message:
+                                  "Assignment ${assignmentTitleController.text} Error",
+                              duration: Duration(seconds: 4),
+                              icon: Icon(Icons.done_outline_rounded,
+                                  color: Colors.white),
+                              backgroundColor: Color.fromARGB(255, 237, 51, 51)
+                                  .withOpacity(0.6),
+                              flushbarPosition: FlushbarPosition.TOP,
+                              animationDuration: Duration(milliseconds: 300),
+                              borderRadius: BorderRadius.circular(10),
+                              margin: EdgeInsets.all(8.0),
+                              onTap: (flushbar) {
+                                flushbar.dismiss();
+                              },
+                            ).show(context);
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                          ),
+                          margin: const EdgeInsets.only(top: 20),
+                          child: Center(
+                            child: Text(
+                              "Upload",
+                              style: GoogleFonts.montserrat(
+                                  textStyle: subheaderBoldbtnwhite),
+                            ),
+                          ),
+                          height: 50,
+                          width: 300,
+                          decoration: BoxDecoration(
+                              color: AppColor.mainBlue,
+                              borderRadius: BorderRadius.circular(10)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              SizedBox(height: 48),
-              ButtonWidget(
-                text: 'Upload File',
-                icon: Icons.cloud_upload_outlined,
-                onClicked: uploadFile,
-              ),
-              SizedBox(height: 20),
-              task != null ? buildUploadStatus(task!) : Container(),
-            ],
-          ),
+            ),
+            Tab(
+              child: Container(),
+            )
+          ],
         ),
       ),
     );
   }
-
-  Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-      allowCompression: true,
-    );
-
-    if (result == null) return;
-    final path = result.files.single.path!;
-
-    setState(() => file = File(path));
-  }
-
-  Future uploadFile() async {
-    if (file == null) return;
-
-    final fileName = basename(file!.path);
-    final destination = 'TimeTable/$fileName';
-
-    task = FirebaseApi.uploadFile(destination, file!);
-    setState(() {});
-
-    if (task == null) return;
-
-    final snapshot = await task!.whenComplete(() {});
-    final urlDownload = await snapshot.ref.getDownloadURL();
-
-    print('Download-Link: $urlDownload');
-  }
-
-  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
-        stream: task.snapshotEvents,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final snap = snapshot.data!;
-            final progress = snap.bytesTransferred / snap.totalBytes;
-            final percentage = (progress * 100).toStringAsFixed(2);
-
-            return Text(
-              '$percentage %',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            );
-          } else {
-            return Container();
-          }
-        },
-      );
 }

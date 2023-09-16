@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/screens/department/lecturer/lecturer.dart';
 import 'package:simbackend/screens/department/profileupdate.dart';
 import 'package:simbackend/screens/department/results/departmentresult.dart';
+import 'package:simbackend/screens/department/timetablepage/timetablepage.dart';
 import 'package:simbackend/screens/lectureview/announcements.dart';
 import 'package:simbackend/screens/lectureview/assignmentpage.dart';
 import 'package:simbackend/screens/lectureview/messageview.dart';
@@ -38,7 +39,7 @@ List<DashboardCard> cardcontent = [
       cardColor: AppColor.mainBlue),
   DashboardCard(
       navigate: ResultUpload(),
-      title: "Results",
+      title: "Results\n Notice",
       cardIcon: FontAwesomeIcons.fileText,
       cardColor: AppColor.mainBlue),
   DashboardCard(
@@ -47,7 +48,7 @@ List<DashboardCard> cardcontent = [
       cardIcon: FontAwesomeIcons.userTie,
       cardColor: AppColor.mainBlue),
   DashboardCard(
-      navigate: ManageAssignment(),
+      navigate: TimetablePage(),
       title: "TimeTable",
       cardIcon: FontAwesomeIcons.squarePollVertical,
       cardColor: AppColor.mainBlue),
