@@ -6,7 +6,7 @@ import '../screens/text.dart';
 
 class DashboarddCards extends StatelessWidget {
   final String title;
-  final int counter;
+
   final IconData cardIcon;
   final Color cardColor;
   final Widget navigatePage;
@@ -15,7 +15,7 @@ class DashboarddCards extends StatelessWidget {
       {super.key,
       required this.title,
       required this.cardIcon,
-      required this.counter,
+ 
       required this.cardColor,
       required this.navigatePage});
 
@@ -41,16 +41,7 @@ class DashboarddCards extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-              top: 90,
-              left: 10,
-              child: Text(
-                counter.toString(),
-                style: GoogleFonts.montserrat(
-                  textStyle: dashboardCardcount,
-                ),
-              ),
-            ),
+        
             Positioned(
                 top: 80,
                 left: 95,

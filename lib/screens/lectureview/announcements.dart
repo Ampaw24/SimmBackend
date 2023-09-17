@@ -1,147 +1,319 @@
-// ignore_for_file: prefer_const_constructors, unused_field, prefer_final_fields, sort_child_properties_last
+// ignore_for_file: sort_child_properties_last, prefer_const_constructors, unused_field, prefer_final_fields
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_flushbar/flutter_flushbar.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:simbackend/utils/colors.dart';
 
-import '../text.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 
-class Annoucements extends StatefulWidget {
-  const Annoucements({super.key});
+import '../../core/colors.dart';
+import '../../core/text.dart';
+
+class Announcements extends StatefulWidget {
+  const Announcements({super.key});
 
   @override
-  State<Annoucements> createState() => _AnnoucementsState();
+  State<Announcements> createState() => _AnnouncementsState();
 }
 
-class _AnnoucementsState extends State<Annoucements> {
-  final TextEditingController _titleController = TextEditingController();
+class _AnnouncementsState extends State<Announcements> {
+  TextEditingController newsTitleController = TextEditingController();
+  TextEditingController newsDescriptionController = TextEditingController();
+  TextEditingController file = TextEditingController();
+  TextEditingController idcontroller = TextEditingController();
 
-  List<String> _courses = [
-    'All',
-    'Course A',
-    'Course B',
-    'Course C',
-    'Course D',
-  ];
-  String? _selectedCourse;
-  List<DropdownMenuItem> getDropdownData() {
-    List<DropdownMenuItem<String>> dropdownItem = [];
-    for (var index = 0; index < _courses.length; index++) {
-      String options = _courses[index];
-      var dropItem = DropdownMenuItem(
-          value: options,
-          child: Text(
-            options.toLowerCase(),
-          ));
-      dropdownItem.add(dropItem);
-    }
-    return dropdownItem;
+  final storageRef = FirebaseStorage.instance.ref();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String selectedFileName = "Attach File";
+  String? filename;
+  PlatformFile? pickedFile;
+  bool isLoading = false;
+  File? fileToDisplay;
+  //News data fetch
+
+  final _newsCollection = FirebaseDatabase.instance.ref('Announcements');
+
+  deleteMessage(key) {
+    _newsCollection.child(key).remove();
   }
 
-  final TextEditingController _announcementController = TextEditingController();
+  DatabaseReference? dbRef;
+
+  @override
+  void initState() {
+    super.initState();
+    dbRef = FirebaseDatabase.instance.ref().child('Announcements');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: AppBar(
-            title: Text(
-              "Annoucement",
-              style: GoogleFonts.montserrat(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: AppColor.btnBlue),
-            ),
-          )),
-      body: SingleChildScrollView(
-        child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 40,
-                ),
-                TextField(
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    labelText: 'Announcement Title',
-                    border: OutlineInputBorder(),
+        appBar: PreferredSize(
+            child: AppBar(
+              actions: [
+                Center(
+                  child: Text(
+                    "Guard Announcement",
+                    style: GoogleFonts.montserrat(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.btnBlue),
                   ),
                 ),
-                SizedBox(height: 20.0),
-                DropdownButtonFormField(
-                    isExpanded: true,
-                    decoration: InputDecoration(
-                        // filled: true,
-
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                BorderSide(width: 1, color: Colors.white))),
-                    value: _selectedCourse,
-                    elevation: 3,
-                    items: getDropdownData(),
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedCourse = value;
-                      });
-                    }),
-                SizedBox(height: 30.0),
-                TextField(
-                  controller: _announcementController,
-                  maxLines: 5,
-                  decoration: InputDecoration(
-                    labelText: 'Announcement',
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                GestureDetector(
-                  onTap: () {
-                    // Handle the announcement submission here
-                    String announcement = _announcementController.text;
-                    if (announcement.isNotEmpty) {
-                      // You can send the announcement to a server, database, or perform any desired action.
-                      // For now, we'll just print it.
-                      print('Announcement: $announcement');
-                      // Optionally, you can clear the text field.
-                      _announcementController.clear();
-                    }
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                    ),
-                    margin: const EdgeInsets.only(top: 20),
-                    child: Center(
-                      child: Text(
-                        "Send Announcement",
-                        style: GoogleFonts.montserrat(
-                            textStyle: subheaderBoldbtnwhite),
-                      ),
-                    ),
-                    height: 50,
-                    width: 300,
-                    decoration: BoxDecoration(
-                        color: AppColor.mainBlue,
-                        borderRadius: BorderRadius.circular(10)),
-                  ),
+                const SizedBox(
+                  width: 80,
                 ),
               ],
-            )),
-      ),
-    );
+              leading: GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Icon(Icons.arrow_back)),
+              backgroundColor: Colors.white,
+            ),
+            preferredSize: const Size.fromHeight(60)),
+        body: SafeArea(
+          child: Scrollbar(
+            child: Expanded(
+                child: StreamBuilder(
+                    stream: _newsCollection.onValue,
+                    builder: (context, snapShot) {
+                      if (snapShot.hasData &&
+                          !snapShot.hasError &&
+                          snapShot.data?.snapshot.value != null) {
+                        Map _newsCollections =
+                            snapShot.data?.snapshot.value as Map;
+                        List _newsItems = [];
+                        _newsCollections.forEach((index, data) =>
+                            _newsItems.add({"key": index, ...data}));
+
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: _newsItems.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: ClipRRect(
+                                  child: Container(
+                                    color: AppColors.cardYellow,
+                                    width: 50,
+                                    height: 50,
+                                    child: Center(
+                                        child: Text(
+                                      _newsItems[index]['announcementId'],
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 15,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    )),
+                                  ),
+                                  borderRadius: BorderRadius.circular(10)),
+                              trailing: GestureDetector(
+                                onTap: () async {
+                                  await deleteMessage(_newsItems[index]['key']);
+
+                                  Fluttertoast.showToast(
+                                      msg: "Announcement Deleted!!",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.black45,
+                                      textColor: Colors.white,
+                                      fontSize: 15.0);
+                                },
+                                child: Icon(
+                                  FontAwesomeIcons.trashCan,
+                                  size: 18,
+                                  color: AppColors.btnBlue,
+                                  weight: 3,
+                                ),
+                              ),
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              title: Text(_newsItems[index]['title'],
+                                  style: GoogleFonts.poppins(
+                                      textStyle: headerboldblue2)),
+                              subtitle: Text(_newsItems[index]['description'],
+                                  style: GoogleFonts.poppins(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w200,
+                                      textStyle: TextStyle())),
+                            );
+                          },
+                        );
+                      }
+                      return Container();
+                    })),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+            isExtended: true,
+            elevation: 6,
+            child: Icon(Icons.add, color: Colors.white, size: 25, fill: 1.0),
+            backgroundColor: Colors.blue,
+            onPressed: () {
+              Get.bottomSheet(
+                  elevation: 5.0,
+                  enableDrag: true,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.white,
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          "Create Annoucement",
+                          style: GoogleFonts.poppins(
+                            textStyle: headerboldblue2,
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Create Annoucement Id',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 10),
+                                  child: TextFormField(
+                                    autocorrect: true,
+                                    maxLength: 3,
+                                    controller: idcontroller,
+                                    decoration: InputDecoration(
+                                        border: OutlineInputBorder(
+                                            borderSide: BorderSide(width: 1.5)),
+                                        hintText: 'Create Id ',
+                                        hintStyle: TextStyle(
+                                          fontSize: 12,
+                                          fontStyle: FontStyle.italic,
+                                        )),
+                                  ),
+                                ),
+                                SizedBox(height: 12),
+                                Text(
+                                  'Title',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: newsTitleController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Create title',
+                                  ),
+                                ),
+                                SizedBox(height: 15),
+                                Text(
+                                  'Detail',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                TextFormField(
+                                  controller: newsDescriptionController,
+                                  maxLines: 2,
+                                  decoration: InputDecoration(
+                                    hintText: 'Add description',
+                                  ),
+                                ),
+                                SizedBox(height: 14),
+                                GestureDetector(
+                                  onTap: () {
+                                    Map<String, String> news = {
+                                      'announcementId': idcontroller.text,
+                                      'title': newsTitleController.text,
+                                      'description':
+                                          newsDescriptionController.text,
+                                    };
+
+                                    dbRef?.push().set(news).then((_) {
+                                      Flushbar(
+                                        title: "Annoucement Posted",
+                                        message:
+                                            "Annoucement ${newsTitleController.text} posted",
+                                        duration: Duration(seconds: 4),
+                                        icon: Icon(Icons.done_outline_rounded,
+                                            color: Colors.white),
+                                        backgroundColor:
+                                            Color.fromARGB(255, 43, 51, 54)
+                                                .withOpacity(0.6),
+                                        flushbarPosition: FlushbarPosition.TOP,
+                                        animationDuration:
+                                            Duration(milliseconds: 500),
+                                        borderRadius: BorderRadius.circular(10),
+                                        margin: EdgeInsets.all(8.0),
+                                        onTap: (flushbar) {
+                                          flushbar.dismiss();
+                                        },
+                                      ).show(context);
+                                      idcontroller.text = "";
+                                      newsTitleController.text = "";
+                                      newsDescriptionController.text = "";
+                                    }).catchError((_) {
+                                      Flushbar(
+                                        title: "News Post Error",
+                                        message:
+                                            "News ${newsTitleController.text} Error",
+                                        duration: Duration(seconds: 4),
+                                        icon: Icon(Icons.done_outline_rounded,
+                                            color: Colors.white),
+                                        backgroundColor:
+                                            Color.fromARGB(255, 237, 51, 51)
+                                                .withOpacity(0.6),
+                                        flushbarPosition: FlushbarPosition.TOP,
+                                        animationDuration:
+                                            Duration(milliseconds: 300),
+                                        borderRadius: BorderRadius.circular(10),
+                                        margin: EdgeInsets.all(8.0),
+                                        onTap: (flushbar) {
+                                          flushbar.dismiss();
+                                        },
+                                      ).show(context);
+                                    });
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                    ),
+                                    margin: const EdgeInsets.only(top: 20),
+                                    child: Center(
+                                      child: Text(
+                                        "Make Announcement",
+                                        style: GoogleFonts.montserrat(
+                                            textStyle: subheaderBoldbtnwhite),
+                                      ),
+                                    ),
+                                    height: 50,
+                                    width: 300,
+                                    decoration: BoxDecoration(
+                                        color: AppColors.cardBlue,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ));
+            }));
   }
 }
-  // onPressed: () {
-  //                   // Handle the announcement submission here
-  //                   String announcement = _announcementController.text;
-  //                   if (announcement.isNotEmpty) {
-  //                     // You can send the announcement to a server, database, or perform any desired action.
-  //                     // For now, we'll just print it.
-  //                     print('Announcement: $announcement');
-  //                     // Optionally, you can clear the text field.
-  //                     _announcementController.clear();
-  //                   }
-  //                 },

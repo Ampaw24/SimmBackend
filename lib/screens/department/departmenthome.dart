@@ -123,7 +123,6 @@ class _DepartmentDashboardState extends State<DepartmentDashboard> {
                   navigatePage: cardcontent[index].navigate,
                   cardColor: cardcontent[index].cardColor,
                   cardIcon: cardcontent[index].cardIcon,
-                  counter: cardcontent[index].counter,
                   title: cardcontent[index].title,
                 ));
               },

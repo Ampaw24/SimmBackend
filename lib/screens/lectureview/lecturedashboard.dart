@@ -33,7 +33,7 @@ List<DashboardCard> cardcontent = [
       cardIcon: FontAwesomeIcons.message,
       cardColor: AppColor.mainBlue),
   DashboardCard(
-      navigate: Annoucements(),
+      navigate: Announcements(),
       title: "Announce \nment",
       cardIcon: FontAwesomeIcons.bullhorn,
       cardColor: AppColor.mainBlue),
@@ -120,7 +120,6 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
                   navigatePage: cardcontent[index].navigate,
                   cardColor: cardcontent[index].cardColor,
                   cardIcon: cardcontent[index].cardIcon,
-                  counter: cardcontent[index].counter,
                   title: cardcontent[index].title,
                 ));
               },

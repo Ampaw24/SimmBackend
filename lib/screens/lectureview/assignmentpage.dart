@@ -1,7 +1,5 @@
-// ignore_for_file: sort_child_properties_last, prefer_const_constructors, unnecessary_null_comparison, unused_local_variable
-
+// ignore_for_file: sort_child_properties_last, prefer_const_constructors, unnecessary_null_comparison, unused_local_variable, avoid_unnecessary_containers, prefer_final_fields
 import 'dart:io';
-
 import 'package:another_flushbar/flushbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -10,9 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/firebase/firebaseapi.dart';
 import 'package:simbackend/utils/colors.dart';
-
 import '../text.dart';
+import 'loc.dart';
 import 'manageAssignment.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
+import 'package:path/path.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class ManageAssignment extends StatefulWidget {
   const ManageAssignment({super.key});
@@ -25,52 +27,53 @@ class _ManageAssignmentState extends State<ManageAssignment> {
   TextEditingController assignmentTitleController = TextEditingController();
   TextEditingController assignmentDescriptionController =
       TextEditingController();
-
+  // ignore: prefer_final_fields
+  TextEditingController _submitTime = TextEditingController();
+  TextEditingController _submitDate = TextEditingController();
+  GuardLocationAssignment assignment = GuardLocationAssignment();
   final storageRef = FirebaseStorage.instance.ref();
+  DateTime selectedDate = DateTime.now();
 
   String selectedFileName = "Attach File";
   String? filename;
   PlatformFile? pickedFile;
   bool isLoading = false;
   File? fileToDisplay;
-  List<String> _allowedExtentions = ["doc", "pdf", "docx", "jpg"];
 
-  Future<void> _pickFile() async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        allowMultiple: false,
-        allowedExtensions: ["doc", "pdf", "docx", "jpg"],
-        type: FileType.any,
-        allowCompression: true,
-      );
+  File? file;
+  // ignore: prefer_const_declarations
+  static final String title = 'Firebase Upload';
+  UploadTask? task;
+  late DatabaseReference dbRef;
+  late String downloadUrl;
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      allowCompression: true,
+    );
 
-      if (result != null) {
-        final filePath = result.files.single.path!;
-        pickedFile = result.files.first;
-        filename = result.files.first.name;
+    if (result == null) return;
+    final path = result.files.single.path!;
 
-        setState(() => fileToDisplay = File(filePath));
-
-        fileToDisplay = File(pickedFile!.path.toString());
-      } else {}
-      setState(() {
-        isLoading = false;
-      });
-    } catch (e) {}
+    setState(() => file = File(path));
   }
 
-  late DatabaseReference dbRef;
-
   Future uploadFile() async {
-    if (fileToDisplay == null) {
-      final fileName = fileToDisplay!.path;
-      final destination = 'Assignment/${fileName}';
+    if (file == null) return;
 
-      FirebaseApi.uploadFile(destination, fileToDisplay!);
-    }
+    final fileName = basename(file!.path);
+    final destination = 'Results/$fileName';
+
+    task = FirebaseApi.uploadFile(destination, file!);
+    setState(() {});
+
+    if (task == null) return;
+
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    downloadUrl = urlDownload;
+
+    print('Download-Link: $urlDownload');
   }
 
   @override
@@ -81,8 +84,8 @@ class _ManageAssignmentState extends State<ManageAssignment> {
 
   @override
   Widget build(BuildContext context) {
-    final sfileName =
-        fileToDisplay != null ? fileToDisplay!.path : "No file selected";
+    final fileName = file != null ? basename(file!.path) : 'No File Selected';
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -95,21 +98,23 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                 Text(
                   "Create",
                   style: GoogleFonts.montserrat(
-                    textStyle: subheaderBold,
-                  ),
+                      fontSize: 15,
+                      color: AppColor.btnBlue,
+                      fontWeight: FontWeight.w300),
                 ),
                 Text(
                   "Manage",
                   style: GoogleFonts.montserrat(
-                    textStyle: subheaderBold,
-                  ),
+                      fontSize: 15,
+                      color: AppColor.btnBlue,
+                      fontWeight: FontWeight.w300),
                 )
               ]),
               title: Text(
                 "Assignment",
                 style: GoogleFonts.montserrat(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
                     color: AppColor.btnBlue),
               ),
             )),
@@ -127,7 +132,7 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                             Text(
                               'Assignment Title',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -141,7 +146,7 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                             Text(
                               'Assignment Description',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 15,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -155,58 +160,88 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                             SizedBox(height: 16),
                             // Add widgets for file upload here
                             // You can use a package like file_picker to handle file uploads
-                            SizedBox(height: 16),
-                            Container(
-                              height: 30,
-                              width: 300,
-                              child: Center(
-                                child: Text(sfileName),
-                              ),
+                            SizedBox(height: 10),
+                            FormBuilderDateTimePicker(
+                              controller: _submitTime,
+                              name: 'end_time',
+                              inputType: InputType.time,
+                              format: DateFormat('h:mm a'),
+                              decoration: const InputDecoration(
+                                  icon: Icon(Icons.lock_clock),
+                                  labelText: 'Submission Time'),
+                              onChanged: (value) {
+                                assignment.endTime = value!;
+                              },
                             ),
-                            GestureDetector(
-                              onTap: _pickFile,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                ),
-                                margin: const EdgeInsets.only(top: 20),
-                                child: Center(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Icon(
-                                        Icons.attach_file,
-                                        color: Colors.white,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        "Choose File",
-                                        style: GoogleFonts.montserrat(
-                                            textStyle: subheaderBoldbtnwhite),
-                                      ),
-                                    ],
+                            FormBuilderDateTimePicker(
+                              name: 'submission_date',
+                              controller: _submitDate,
+                              initialValue: selectedDate,
+                              inputType: InputType.date,
+                              format: DateFormat('yyyy-MM-dd'),
+                              decoration: InputDecoration(
+                                icon: Icon(Icons.calendar_month),
+                                labelText: 'Submission Date',
+                              ),
+                              onChanged: (DateTime? newValue) {
+                                if (newValue != null) {
+                                  setState(() {
+                                    selectedDate = newValue;
+                                  });
+                                }
+                              },
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              child: Center(
+                                child: OutlinedButton(
+                                  style: ButtonStyle(
+                                    alignment: Alignment.center,
+                                  ),
+                                  onPressed: selectFile,
+                                  child: SizedBox(
+                                    width: 250,
+                                    height: 20,
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.file_upload,
+                                          color: AppColor.btnBlue,
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Flexible(
+                                          child: RichText(
+                                            overflow: TextOverflow.ellipsis,
+                                            strutStyle:
+                                                StrutStyle(fontSize: 12.0),
+                                            text: TextSpan(
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                                text: fileName),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                                height: 50,
-                                width: 300,
-                                decoration: BoxDecoration(
-                                    color: AppColor.mainBlue,
-                                    borderRadius: BorderRadius.circular(10)),
                               ),
                             ),
 
                             GestureDetector(
-                              onTap: () {
+                              onTap: () async {
+                                await uploadFile();
                                 Map<String, String> assignment = {
                                   'title': assignmentTitleController.text,
                                   'description':
                                       assignmentDescriptionController.text,
+                                  'submition-time': _submitTime.text,
+                                  'file-url': downloadUrl,
+                                  'submission-date': _submitDate.text,
                                 };
-                                uploadFile();
 
                                 dbRef.push().set(assignment).then((_) {
                                   Flushbar(
@@ -228,9 +263,13 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                                       flushbar.dismiss();
                                     },
                                   ).show(context);
-
+                                  setState(() {
+                                    isLoading = false;
+                                  });
                                   assignmentTitleController.text = "";
                                   assignmentDescriptionController.text = "";
+                                  _submitTime.text = "";
+                                  _submitDate.text = " ";
                                 }).catchError((_) {
                                   Flushbar(
                                     title: "Assignment Post Error",
