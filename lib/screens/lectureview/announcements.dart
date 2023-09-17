@@ -60,7 +60,7 @@ class _AnnouncementsState extends State<Announcements> {
               actions: [
                 Center(
                   child: Text(
-                    "Guard Announcement",
+                    "Lecturer Announcement",
                     style: GoogleFonts.montserrat(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
@@ -154,7 +154,7 @@ class _AnnouncementsState extends State<Announcements> {
             isExtended: true,
             elevation: 6,
             child: Icon(Icons.add, color: Colors.white, size: 25, fill: 1.0),
-            backgroundColor: Colors.blue,
+            backgroundColor: AppColors.btnBlue,
             onPressed: () {
               Get.bottomSheet(
                   elevation: 5.0,
@@ -168,7 +168,7 @@ class _AnnouncementsState extends State<Announcements> {
                           height: 15,
                         ),
                         Text(
-                          "Create Annoucement",
+                          "Make Annoucement",
                           style: GoogleFonts.poppins(
                             textStyle: headerboldblue2,
                           ),

@@ -81,7 +81,7 @@ class _DepartmentDashboardState extends State<DepartmentDashboard> {
               ),
               GestureDetector(
                 onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfilePage())),
+                    MaterialPageRoute(builder: (context) => ProfileUpdate())),
                 child: Container(
                   margin: const EdgeInsets.only(right: 20),
                   height: 35,

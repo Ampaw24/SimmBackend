@@ -37,11 +37,7 @@ List<DashboardCard> cardcontent = [
       title: "Announce \nment",
       cardIcon: FontAwesomeIcons.bullhorn,
       cardColor: AppColor.mainBlue),
-  // DashboardCard(
-  //     navigate: Schedules(),
-  //     title: "Schedules",
-  //     cardIcon: FontAwesomeIcons.clockRotateLeft,
-  //     cardColor: AppColor.mainBlue),
+
   DashboardCard(
       navigate: ProfilePage(),
       title: "Profile",

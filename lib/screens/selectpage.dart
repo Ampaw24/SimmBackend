@@ -89,7 +89,7 @@ class _SelectPageState extends State<SelectPage> {
                                   height: 30,
                                 ),
                                 GestureDetector(
-                                  onTap: () => Get.to(LecturerDashboard(),
+                                  onTap: () => Get.to(LecturerLogin(),
                                       transition: Transition.downToUp),
                                   child: Container(
                                     child: Center(

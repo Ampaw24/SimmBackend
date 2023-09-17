@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
-
 import 'dart:typed_data';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simbackend/screens/selectpage.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
 import 'package:simbackend/utils/utils.dart';
@@ -51,25 +53,27 @@ class _ProfilePageState extends State<ProfilePage> {
             Stack(
               children: [
                 Center(
-                  child:_image != null ? Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    height: 120,
-                    width: 120,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(60),
-                        image: DecorationImage(
-                            image: MemoryImage(_image!),
-                            fit: BoxFit.cover)),
-                  ) : Container(
-                    margin: const EdgeInsets.only(top: 30),
-                    height: 120,
-                    width: 120,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(60),
-                        image: DecorationImage(
-                            image: AssetImage('assets/profile.png'),
-                            fit: BoxFit.cover)),
-                  ),
+                  child: _image != null
+                      ? Container(
+                          margin: const EdgeInsets.only(top: 30),
+                          height: 120,
+                          width: 120,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(60),
+                              image: DecorationImage(
+                                  image: MemoryImage(_image!),
+                                  fit: BoxFit.cover)),
+                        )
+                      : Container(
+                          margin: const EdgeInsets.only(top: 30),
+                          height: 120,
+                          width: 120,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(60),
+                              image: DecorationImage(
+                                  image: AssetImage('assets/catprofile.JPG'),
+                                  fit: BoxFit.cover)),
+                        ),
                 ),
                 Positioned(
                     top: 110,
@@ -188,7 +192,23 @@ class _ProfilePageState extends State<ProfilePage> {
                       )
                     ],
                   )),
-            )
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            OutlinedButton.icon(
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                  Get.to(SelectPage());
+                },
+                icon: Icon(
+                  Icons.logout,
+                  color: AppColor.btnBlue,
+                ),
+                label: Text(
+                  "Logout",
+                  style: TextStyle(color: AppColor.btnBlue),
+                ))
           ],
         ),
       ),
