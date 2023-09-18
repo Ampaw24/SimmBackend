@@ -35,27 +35,28 @@ class _MessageViewState extends State<MessageView> {
                   fontWeight: FontWeight.w600,
                   color: AppColor.btnBlue),
             ),
-            leading: Container(),
           )),
       body: ListView.builder(
           itemCount: messages.length,
           itemBuilder: (context, index) {
-            return ListTile(
-                leading: CircleAvatar(
-                  // You can use an image here for the user profile picture
-                  backgroundColor: Colors.blue,
-                  child: Text(
-                    messages[index]
-                        .userProfileImage, // Display the first letter of the username
-                    style: TextStyle(color: Colors.white),
+            return Card(
+              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              elevation: 5,
+              color: Colors.white,
+              child: ListTile(
+                  leading: CircleAvatar(
+                    // You can use an image here for the user profile picture
+                    backgroundColor: Colors.blue,
+                    child: Text(
+                      messages[index]
+                          .userProfileImage, // Display the first letter of the username
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
-                ),
-                title: Text(messages[index].userName),
-                subtitle: Text(messages[index].message),
-                onTap: () {
-                  // Handle message tap action here
-                  print('Tapped on message: ${messages[index].message}');
-                });
+                  title: Text(messages[index].userName),
+                  subtitle: Text(messages[index].message),
+                  onTap: () {}),
+            );
           }),
     );
   }

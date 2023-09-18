@@ -15,6 +15,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get/get.dart';
 
 class ManageAssignment extends StatefulWidget {
   const ManageAssignment({super.key});
@@ -158,8 +159,6 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                               ),
                             ),
                             SizedBox(height: 16),
-                            // Add widgets for file upload here
-                            // You can use a package like file_picker to handle file uploads
                             SizedBox(height: 10),
                             FormBuilderDateTimePicker(
                               controller: _submitTime,
@@ -230,7 +229,6 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                                 ),
                               ),
                             ),
-
                             GestureDetector(
                               onTap: () async {
                                 await uploadFile();
@@ -244,25 +242,18 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                                 };
 
                                 dbRef.push().set(assignment).then((_) {
-                                  Flushbar(
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  Get.showSnackbar(GetSnackBar(
                                     title: "Assignment Sent",
                                     message:
                                         "Assignment ${assignmentTitleController.text} posted",
-                                    duration: Duration(seconds: 4),
-                                    icon: Icon(Icons.done_outline_rounded,
-                                        color: Colors.white),
-                                    backgroundColor:
-                                        Color.fromARGB(255, 22, 149, 195)
-                                            .withOpacity(0.6),
-                                    flushbarPosition: FlushbarPosition.TOP,
-                                    animationDuration:
-                                        Duration(milliseconds: 500),
-                                    borderRadius: BorderRadius.circular(10),
-                                    margin: EdgeInsets.all(8.0),
-                                    onTap: (flushbar) {
-                                      flushbar.dismiss();
-                                    },
-                                  ).show(context);
+                                    animationDuration: Duration(seconds: 2),
+                                    isDismissible: true,
+                                    snackPosition: SnackPosition.BOTTOM,
+                                  ));
+
                                   setState(() {
                                     isLoading = false;
                                   });
