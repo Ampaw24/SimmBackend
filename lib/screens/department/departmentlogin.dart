@@ -1,6 +1,7 @@
 // ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, sort_child_properties_last, unnecessary_null_comparison, use_build_context_synchronously
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/firebase/firebaseauth.dart';
@@ -244,7 +245,10 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                             ),
                           ),
                           if (_isloading)
-                            Center(child: CircularProgressIndicator())
+                            Center(
+                                child: SpinKitDualRing(
+                              color: AppColor.btnBlue,
+                            ))
                         ],
                       ),
                     ),

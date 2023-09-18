@@ -16,7 +16,7 @@ import '../../widget/dashboardcard.dart';
 import '../../widget/navdrawer.dart';
 import '../text.dart';
 import 'annocement.dart';
-import 'messages.dart';
+import 'complaints.dart';
 
 class DepartmentDashboard extends StatefulWidget {
   String departmentMail;
@@ -28,7 +28,7 @@ class DepartmentDashboard extends StatefulWidget {
 
 List<DashboardCard> cardcontent = [
   DashboardCard(
-      navigate: DepartmentMessages(),
+      navigate: Complaints(),
       title: "Messages",
       cardIcon: FontAwesomeIcons.message,
       cardColor: AppColor.mainBlue),

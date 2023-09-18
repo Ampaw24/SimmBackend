@@ -16,13 +16,12 @@ class ManageLecturer extends StatefulWidget {
 
 class _ManageLecturerState extends State<ManageLecturer> {
   List<MessageModule> messages = [];
-  final _newsCollection = FirebaseDatabase.instance.ref('Announcements');
+  final _lecturerCollection = FirebaseDatabase.instance.ref('Lecturers');
   DatabaseReference? dbRef;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    dbRef = FirebaseDatabase.instance.ref().child('Announcements');
+    dbRef = FirebaseDatabase.instance.ref().child('Lecturers');
   }
 
   @override
@@ -41,38 +40,29 @@ class _ManageLecturerState extends State<ManageLecturer> {
                     fontWeight: FontWeight.w600,
                     color: AppColor.btnBlue),
               ),
-              leading: Container(),
             )),
         body: StreamBuilder(
-            stream: _newsCollection.onValue,
+            stream: _lecturerCollection.onValue,
             builder: (context, snapShot) {
               if (snapShot.hasData &&
                   !snapShot.hasError &&
                   snapShot.data?.snapshot.value != null) {
-                Map _newsCollections = snapShot.data?.snapshot.value as Map;
+                Map _lecturerCollections = snapShot.data?.snapshot.value as Map;
                 List _newsItems = [];
-                _newsCollections.forEach(
+                _lecturerCollections.forEach(
                     (index, data) => _newsItems.add({"key": index, ...data}));
                 return ListView.builder(
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                          leading: CircleAvatar(
-                            // You can use an image here for the user profile picture
-                            backgroundColor: Colors.blue,
-                            child: Text(
-                              messages[index]
-                                  .userProfileImage, // Display the first letter of the username
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          title: Text(_newsItems[index]['LecturerName']),
-                          subtitle: Text(_newsItems[index]['LecturerName']),
-                          onTap: () {
-                            // Handle message tap action here
-                            print(
-                                'Tapped on message: ${messages[index].message}');
-                          });
+                      return Card(
+                        child: ListTile(
+                            title: Text(_newsItems[index]['LecturerName']),
+                            subtitle: Text(_newsItems[index]['Course-Lecture']),
+                            onTap: () {
+                              print(
+                                  'Tapped on message: ${messages[index].message}');
+                            }),
+                      );
                     });
               }
               return Container();
