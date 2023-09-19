@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/utils/colors.dart';
-
+import 'package:readmore/readmore.dart';
 import '../../modules/messagemodeule.dart';
 
 class Complaints extends StatefulWidget {
@@ -29,10 +29,10 @@ class _ComplaintsState extends State<Complaints> {
           child: AppBar(
             centerTitle: true,
             title: Text(
-              "Messages",
+              "Students Complaints",
               style: GoogleFonts.montserrat(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
                   color: AppColor.btnBlue),
             ),
           )),
@@ -54,7 +54,21 @@ class _ComplaintsState extends State<Complaints> {
                     ),
                   ),
                   title: Text(messages[index].userName),
-                  subtitle: Text(messages[index].message),
+                  subtitle: ReadMoreText(
+                    messages[index].message,
+                    trimLines: 1,
+                    colorClickableText: Colors.pink,
+                    trimMode: TrimMode.Line,
+                    trimCollapsedText: 'show more',
+                    trimExpandedText: ' show less',
+                    lessStyle: TextStyle(color: AppColor.btnBlue),
+                    moreStyle: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.blueAccent),
+                  ),
+
+                  // Text(messages[index].message),
                   onTap: () {}),
             );
           }),

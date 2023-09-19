@@ -1,10 +1,15 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, prefer_const_constructors
 
+import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:simbackend/core/text.dart';
+import 'package:simbackend/utils/colors.dart';
 import '../../../api/firebase_api.dart';
 import '../../../widget/button_widget.dart';
 import 'package:flutter/services.dart';
@@ -23,6 +28,40 @@ class _ResultUploadState extends State<ResultUpload> {
   static final String title = 'Firebase Upload';
   UploadTask? task;
 
+  int _currentStep = 0;
+  String? selectedProgram;
+  String? selectedLevel;
+  final resultNoticeReference = FirebaseDatabase.instance.ref("Results");
+  // Define your list of programs and levels here
+  List<String> programs = [
+    'Mechanical Engineering',
+    'Civil Engineering',
+    'Electrical Engineering'
+  ];
+  List<String> levels = ['Level 100', 'Level 200', 'Level 300', 'Level 400'];
+
+  // This method is called when the user submits the form
+  void _submitForm() {
+    // Perform actions to submit the form data, e.g., send to a server or save to local storage
+    print('Program: $selectedProgram');
+    print('Level: $selectedLevel');
+    // You can add more logic here as needed
+
+    // Reset the form
+    setState(() {
+      _currentStep = 0;
+      selectedProgram = null;
+      selectedLevel = null;
+    });
+  }
+
+  DatabaseReference? dbRef;
+  @override
+  void initState() {
+    dbRef = FirebaseDatabase.instance.ref().child('Results');
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final fileName = file != null ? basename(file!.path) : 'No File Selected';
@@ -34,32 +73,114 @@ class _ResultUploadState extends State<ResultUpload> {
           style: headerboldblue2,
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.all(32),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ButtonWidget(
+      body: Center(
+        child: Column(
+          children: [
+            Stepper(
+              currentStep: _currentStep,
+              onStepContinue: () {
+                if (_currentStep == 0 && selectedProgram != null) {
+                  // Check if the program is selected before proceeding to the next step
+                  setState(() {
+                    _currentStep++;
+                  });
+                } else if (_currentStep == 1 && selectedLevel != null) {
+                  // Check if the level is selected before submitting the form
+                  _submitForm();
+                }
+              },
+              onStepCancel: () {
+                if (_currentStep > 0) {
+                  setState(() {
+                    _currentStep--;
+                  });
+                }
+              },
+              steps: [
+                Step(
+                  subtitle: Text("Select Program for Result Upload Notice"),
+                  title: Text('Select Program'),
+                  isActive: _currentStep == 0,
+                  content: DropdownButtonFormField<String>(
+                    value: selectedProgram,
+                    items: programs.map((program) {
+                      return DropdownMenuItem<String>(
+                        value: program,
+                        child: Text(program),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedProgram = value;
+                      });
+                    },
+                  ),
+                ),
+                Step(
+                  title: Text('Select Level'),
+                  isActive: _currentStep == 1,
+                  content: DropdownButtonFormField<String>(
+                    value: selectedLevel,
+                    items: levels.map((level) {
+                      return DropdownMenuItem<String>(
+                        value: level,
+                        child: Text(level),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedLevel = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 15),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: ButtonWidget(
                 text: 'Select File',
                 icon: Icons.attach_file,
                 onClicked: selectFile,
               ),
-              SizedBox(height: 8),
-              Text(
-                fileName,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            SizedBox(height: 15),
+            Center(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Text(
+                  fileName,
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
+                ),
               ),
-              SizedBox(height: 48),
-              ButtonWidget(
-                text: 'Upload File',
-                icon: Icons.cloud_upload_outlined,
-                onClicked: uploadFile,
+            ),
+            SizedBox(height: 48),
+            GestureDetector(
+              onTap: () async {
+                Map<String, String> resultNotice = {
+                  "Selected Program": selectedProgram.toString(),
+                  "Level": selectedLevel.toString(),
+                };
+                await dbRef!.push().set(resultNotice).then((_) {
+                  Get.showSnackbar(GetSnackBar(
+                    title: "Result Uploaded",
+                    message: "Frersrsrsrsrs",
+                  ));
+                });
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: ButtonWidget(
+                  text: 'Upload',
+                  icon: Icons.cloud_upload_outlined,
+                  onClicked:(){},
+                ),
               ),
-              SizedBox(height: 20),
-              task != null ? buildUploadStatus(task!) : Container(),
-            ],
-          ),
+            ),
+            SizedBox(height: 20),
+            task != null ? buildUploadStatus(task!) : Container(),
+          ],
         ),
       ),
     );
@@ -73,7 +194,6 @@ class _ResultUploadState extends State<ResultUpload> {
 
     if (result == null) return;
     final path = result.files.single.path!;
-
     setState(() => file = File(path));
   }
 

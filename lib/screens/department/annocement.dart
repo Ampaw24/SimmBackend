@@ -19,6 +19,8 @@ class _DepartmentAnnoucementsState extends State<DepartmentAnnoucements> {
   final TextEditingController _titleController = TextEditingController();
 
   final TextEditingController _announcementController = TextEditingController();
+  final _assignmentCollection =
+      FirebaseDatabase.instance.ref('Department_Announcement');
   late DatabaseReference dbRef;
   @override
   void initState() {

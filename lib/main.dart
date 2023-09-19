@@ -21,6 +21,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Student Info Manager',
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 3, 46, 80)),
         dialogTheme: DialogTheme(backgroundColor: Colors.white),
         datePickerTheme: DatePickerThemeData(
             backgroundColor: Colors.white,
