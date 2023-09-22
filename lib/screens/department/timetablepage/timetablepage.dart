@@ -32,7 +32,7 @@ class _TimetablePageState extends State<TimetablePage> {
   PlatformFile? pickedFile;
   bool isLoading = false;
   File? fileToDisplay;
-  List<String> _allowedExtentions = ["doc", "pdf", "docx", "jpg"];
+
 
   Future<void> _pickFile() async {
     try {

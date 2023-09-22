@@ -1,4 +1,4 @@
-// ignore_for_file: unused_field, prefer_const_constructors
+// ignore_for_file: unused_field, prefer_const_constructors, prefer_final_fields
 
 import 'dart:convert';
 import 'dart:io';
@@ -14,6 +14,7 @@ import '../../../api/firebase_api.dart';
 import '../../../widget/button_widget.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class ResultUpload extends StatefulWidget {
   const ResultUpload({super.key});
@@ -23,6 +24,11 @@ class ResultUpload extends StatefulWidget {
 }
 
 class _ResultUploadState extends State<ResultUpload> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  TextEditingController _departmentController = TextEditingController();
+  TextEditingController _noticeController = TextEditingController();
+  bool _isLoading = false;
+
   File? file;
   // ignore: prefer_const_declarations
   static final String title = 'Firebase Upload';
@@ -31,8 +37,11 @@ class _ResultUploadState extends State<ResultUpload> {
   int _currentStep = 0;
   String? selectedProgram;
   String? selectedLevel;
-  final resultNoticeReference = FirebaseDatabase.instance.ref("Results");
+  final resultNoticeReference = FirebaseDatabase.instance.ref("Results_Notice");
+
+  late final String fileUrl;
   // Define your list of programs and levels here
+
   List<String> programs = [
     'Mechanical Engineering',
     'Civil Engineering',
@@ -58,7 +67,7 @@ class _ResultUploadState extends State<ResultUpload> {
   DatabaseReference? dbRef;
   @override
   void initState() {
-    dbRef = FirebaseDatabase.instance.ref().child('Results');
+    dbRef = FirebaseDatabase.instance.ref().child('Results_Notice');
     super.initState();
   }
 
@@ -73,114 +82,120 @@ class _ResultUploadState extends State<ResultUpload> {
           style: headerboldblue2,
         ),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Stepper(
-              currentStep: _currentStep,
-              onStepContinue: () {
-                if (_currentStep == 0 && selectedProgram != null) {
-                  // Check if the program is selected before proceeding to the next step
-                  setState(() {
-                    _currentStep++;
-                  });
-                } else if (_currentStep == 1 && selectedLevel != null) {
-                  // Check if the level is selected before submitting the form
-                  _submitForm();
-                }
-              },
-              onStepCancel: () {
-                if (_currentStep > 0) {
-                  setState(() {
-                    _currentStep--;
-                  });
-                }
-              },
-              steps: [
-                Step(
-                  subtitle: Text("Select Program for Result Upload Notice"),
-                  title: Text('Select Program'),
-                  isActive: _currentStep == 0,
-                  content: DropdownButtonFormField<String>(
-                    value: selectedProgram,
-                    items: programs.map((program) {
-                      return DropdownMenuItem<String>(
-                        value: program,
-                        child: Text(program),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedProgram = value;
-                      });
-                    },
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              _isLoading ? Center(child: CircularProgressIndicator(),):Container(),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Text("Department"),
+                      SizedBox(height: 12.0),
+                      TextFormField(
+                        controller: _departmentController,
+                        decoration: InputDecoration(
+                          labelText: 'Enter Department Name',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter the department';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 16.0),
+                      SizedBox(height: 12.0),
+                      Text("Notice"),
+                      SizedBox(height: 12.0),
+                      TextFormField(
+                        controller: _noticeController,
+                        decoration: InputDecoration(
+                          labelText: 'Enter Result Notice Message',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter the result notice';
+                          }
+                          return null;
+                        },
+                        maxLines: 3, // Multiline input
+                      ),
+                    ],
                   ),
                 ),
-                Step(
-                  title: Text('Select Level'),
-                  isActive: _currentStep == 1,
-                  content: DropdownButtonFormField<String>(
-                    value: selectedLevel,
-                    items: levels.map((level) {
-                      return DropdownMenuItem<String>(
-                        value: level,
-                        child: Text(level),
-                      );
-                    }).toList(),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedLevel = value;
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 15),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: ButtonWidget(
-                text: 'Select File',
-                icon: Icons.attach_file,
-                onClicked: selectFile,
               ),
-            ),
-            SizedBox(height: 15),
-            Center(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  fileName,
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
-                ),
-              ),
-            ),
-            SizedBox(height: 48),
-            GestureDetector(
-              onTap: () async {
-                Map<String, String> resultNotice = {
-                  "Selected Program": selectedProgram.toString(),
-                  "Level": selectedLevel.toString(),
-                };
-                await dbRef!.push().set(resultNotice).then((_) {
-                  Get.showSnackbar(GetSnackBar(
-                    title: "Result Uploaded",
-                    message: "Frersrsrsrsrs",
-                  ));
-                });
-              },
-              child: Container(
+              SizedBox(height: 15),
+              Container(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: ButtonWidget(
-                  text: 'Upload',
-                  icon: Icons.cloud_upload_outlined,
-                  onClicked:(){},
+                  text: 'Select File',
+                  icon: Icons.attach_file,
+                  onClicked: selectFile,
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            task != null ? buildUploadStatus(task!) : Container(),
-          ],
+              SizedBox(height: 15),
+              Center(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    fileName,
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
+                  ),
+                ),
+              ),
+              SizedBox(height: 38),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: ButtonWidget(
+                  text: 'Submit',
+                  icon: Icons.cloud_upload_outlined,
+                  onClicked: () async {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    await uploadFile();
+                    Map<String, String> resultNotice = {
+                      "Selected Department": _departmentController.text,
+                      "Notice_Message": _noticeController.text,
+                      "fileUploade": fileUrl,
+                    };
+
+                    await dbRef!.push().set(resultNotice).then((_) {
+                      Get.showSnackbar(
+                        GetSnackBar(
+                        titleText: Text("Results Uploaded"),
+                        backgroundColor: Colors.black45,
+                        snackPosition: SnackPosition.BOTTOM,
+                        title: "Result Uploaded",
+                        message:
+                            "Results Notice has been sent to ${_departmentController.text} students!",
+                      ));
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    });
+                    if (_formKey.currentState!.validate()) {
+                      // Process and save the form data here
+                      // For example, you can send it to a server
+                    }
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
+              task != null ? buildUploadStatus(task!) : Container(),
+            ],
+          ),
         ),
       ),
     );
@@ -212,6 +227,9 @@ class _ResultUploadState extends State<ResultUpload> {
     final urlDownload = await snapshot.ref.getDownloadURL();
 
     print('Download-Link: $urlDownload');
+    setState(() {
+      fileUrl = urlDownload;
+    });
   }
 
   Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(

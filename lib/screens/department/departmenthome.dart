@@ -1,4 +1,4 @@
-// ignore_for_file: sort_child_properties_last, prefer_const_constructors
+// ignore_for_file: sort_child_properties_last, prefer_const_constructors, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,10 +6,6 @@ import 'package:simbackend/screens/department/lecturer/lecturer.dart';
 import 'package:simbackend/screens/department/profileupdate.dart';
 import 'package:simbackend/screens/department/results/departmentresult.dart';
 import 'package:simbackend/screens/department/timetablepage/timetablepage.dart';
-import 'package:simbackend/screens/lectureview/announcements.dart';
-import 'package:simbackend/screens/lectureview/assignmentpage.dart';
-import 'package:simbackend/screens/lectureview/messageview.dart';
-import 'package:simbackend/screens/lectureview/profile.dart';
 import '../../modules/dashboardmodule.dart';
 import '../../utils/colors.dart';
 import '../../widget/dashboardcard.dart';
@@ -26,41 +22,9 @@ class DepartmentDashboard extends StatefulWidget {
   State<DepartmentDashboard> createState() => _DepartmentDashboardState();
 }
 
-List<DashboardCard> cardcontent = [
-  DashboardCard(
-      navigate: Complaints(),
-      title: "Messages",
-      cardIcon: FontAwesomeIcons.message,
-      cardColor: AppColor.mainBlue),
-  DashboardCard(
-      navigate: DepartmentAnnoucements(),
-      title: "Announce \nments",
-      cardIcon: FontAwesomeIcons.bullhorn,
-      cardColor: AppColor.mainBlue),
-  DashboardCard(
-      navigate: ResultUpload(),
-      title: "Results\n Notice",
-      cardIcon: FontAwesomeIcons.fileText,
-      cardColor: AppColor.mainBlue),
-  DashboardCard(
-      navigate: BTMnav(pageIndex: 0),
-      title: "Lecturers",
-      cardIcon: FontAwesomeIcons.userTie,
-      cardColor: AppColor.mainBlue),
-  DashboardCard(
-      navigate: TimetablePage(),
-      title: "TimeTable",
-      cardIcon: FontAwesomeIcons.squarePollVertical,
-      cardColor: AppColor.mainBlue),
-  DashboardCard(
-      navigate: ProfileUpdate(),
-      title: "Profile",
-      cardIcon: FontAwesomeIcons.userPen,
-      cardColor: AppColor.mainBlue),
-];
-
 class _DepartmentDashboardState extends State<DepartmentDashboard> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +38,6 @@ class _DepartmentDashboardState extends State<DepartmentDashboard> {
                   _scaffoldKey.currentState!.openDrawer();
                 },
                 child: Icon(Icons.menu_outlined)),
-            // leading: IconButton(onPressed: onPressed, icon: icon),
             actions: [
               SizedBox(
                 width: 110,
@@ -133,3 +96,36 @@ class _DepartmentDashboardState extends State<DepartmentDashboard> {
     );
   }
 }
+
+List<DashboardCard> cardcontent = [
+  DashboardCard(
+      navigate: Complaints(),
+      title: "Complaints",
+      cardIcon: FontAwesomeIcons.message,
+      cardColor: AppColor.mainBlue),
+  DashboardCard(
+      navigate: DepartmentAnnoucements(),
+      title: "Announce \nments",
+      cardIcon: FontAwesomeIcons.bullhorn,
+      cardColor: AppColor.mainBlue),
+  DashboardCard(
+      navigate: ResultUpload(),
+      title: "Results\n Notice",
+      cardIcon: FontAwesomeIcons.fileText,
+      cardColor: AppColor.mainBlue),
+  DashboardCard(
+      navigate: BTMnav(pageIndex: 0),
+      title: "Lecturers",
+      cardIcon: FontAwesomeIcons.userTie,
+      cardColor: AppColor.mainBlue),
+  DashboardCard(
+      navigate: TimetablePage(),
+      title: "TimeTable",
+      cardIcon: FontAwesomeIcons.squarePollVertical,
+      cardColor: AppColor.mainBlue),
+  DashboardCard(
+      navigate: ProfileUpdate(),
+      title: "Profile",
+      cardIcon: FontAwesomeIcons.userPen,
+      cardColor: AppColor.mainBlue),
+];
