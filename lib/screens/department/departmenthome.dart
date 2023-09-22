@@ -109,7 +109,7 @@ List<DashboardCard> cardcontent = [
       cardIcon: FontAwesomeIcons.bullhorn,
       cardColor: AppColor.mainBlue),
   DashboardCard(
-      navigate: ResultUpload(),
+      navigate: DepartmentResult(),
       title: "Results\n Notice",
       cardIcon: FontAwesomeIcons.fileText,
       cardColor: AppColor.mainBlue),

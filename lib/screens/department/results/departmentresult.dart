@@ -1,252 +1,156 @@
-// ignore_for_file: unused_field, prefer_const_constructors, prefer_final_fields
+// ignore_for_file: prefer_const_constructors, unused_field, prefer_final_fields, sort_child_properties_last
 
-import 'dart:convert';
-import 'dart:io';
-import 'package:file_picker/file_picker.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:simbackend/core/text.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/utils/colors.dart';
-import '../../../api/firebase_api.dart';
-import '../../../widget/button_widget.dart';
-import 'package:flutter/services.dart';
-import 'package:path/path.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-class ResultUpload extends StatefulWidget {
-  const ResultUpload({super.key});
+import '../../../core/text.dart';
+
+class DepartmentResult extends StatefulWidget {
+  const DepartmentResult({super.key});
 
   @override
-  State<ResultUpload> createState() => _ResultUploadState();
+  State<DepartmentResult> createState() => _DepartmentResultState();
 }
 
-class _ResultUploadState extends State<ResultUpload> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _departmentController = TextEditingController();
-  TextEditingController _noticeController = TextEditingController();
-  bool _isLoading = false;
+class _DepartmentResultState extends State<DepartmentResult> {
+  final TextEditingController _titleController = TextEditingController();
 
-  File? file;
-  // ignore: prefer_const_declarations
-  static final String title = 'Firebase Upload';
-  UploadTask? task;
-
-  int _currentStep = 0;
-  String? selectedProgram;
-  String? selectedLevel;
-  final resultNoticeReference = FirebaseDatabase.instance.ref("Results_Notice");
-
-  late final String fileUrl;
-  // Define your list of programs and levels here
-
-  List<String> programs = [
-    'Mechanical Engineering',
-    'Civil Engineering',
-    'Electrical Engineering'
-  ];
-  List<String> levels = ['Level 100', 'Level 200', 'Level 300', 'Level 400'];
-
-  // This method is called when the user submits the form
-  void _submitForm() {
-    // Perform actions to submit the form data, e.g., send to a server or save to local storage
-    print('Program: $selectedProgram');
-    print('Level: $selectedLevel');
-    // You can add more logic here as needed
-
-    // Reset the form
-    setState(() {
-      _currentStep = 0;
-      selectedProgram = null;
-      selectedLevel = null;
-    });
-  }
-
-  DatabaseReference? dbRef;
+  final TextEditingController _announcementController = TextEditingController();
+  final _assignmentCollection =
+      FirebaseDatabase.instance.ref('Department_Result');
+  late DatabaseReference dbRef;
   @override
   void initState() {
-    dbRef = FirebaseDatabase.instance.ref().child('Results_Notice');
+    // TODO: implement initState
     super.initState();
+    dbRef = FirebaseDatabase.instance.ref().child('Department_Result');
   }
 
   @override
   Widget build(BuildContext context) {
-    final fileName = file != null ? basename(file!.path) : 'No File Selected';
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Result Notice",
-          style: headerboldblue2,
-        ),
-      ),
+      backgroundColor: Colors.white,
+      appBar: PreferredSize(
+          preferredSize: Size.fromHeight(60),
+          child: AppBar(
+            title: Text(
+              " Result Notice",
+              style: GoogleFonts.montserrat(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                  color: AppColor.btnBlue),
+            ),
+          )),
       body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              _isLoading ? Center(child: CircularProgressIndicator(),):Container(),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Text("Department"),
-                      SizedBox(height: 12.0),
-                      TextFormField(
-                        controller: _departmentController,
-                        decoration: InputDecoration(
-                          labelText: 'Enter Department Name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter the department';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 16.0),
-                      SizedBox(height: 12.0),
-                      Text("Notice"),
-                      SizedBox(height: 12.0),
-                      TextFormField(
-                        controller: _noticeController,
-                        decoration: InputDecoration(
-                          labelText: 'Enter Result Notice Message',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter the result notice';
-                          }
-                          return null;
-                        },
-                        maxLines: 3, // Multiline input
-                      ),
-                    ],
+        child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Text(
+                  "Send Result Notice To Sudents",
+                  style: GoogleFonts.montserrat(
+                      textStyle: TextStyle(
+                          color: AppColor.btnBlue,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500)),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextField(
+                  controller: _titleController,
+                  decoration: InputDecoration(
+                    labelText: 'Notice Title',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-              ),
-              SizedBox(height: 15),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: ButtonWidget(
-                  text: 'Select File',
-                  icon: Icons.attach_file,
-                  onClicked: selectFile,
-                ),
-              ),
-              SizedBox(height: 15),
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    fileName,
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
+                SizedBox(height: 30.0),
+                TextField(
+                  controller: _announcementController,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    labelText: 'Notice Details',
+                    border: OutlineInputBorder(),
                   ),
                 ),
-              ),
-              SizedBox(height: 38),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: ButtonWidget(
-                  text: 'Submit',
-                  icon: Icons.cloud_upload_outlined,
-                  onClicked: () async {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    await uploadFile();
-                    Map<String, String> resultNotice = {
-                      "Selected Department": _departmentController.text,
-                      "Notice_Message": _noticeController.text,
-                      "fileUploade": fileUrl,
+                SizedBox(height: 16.0),
+                GestureDetector(
+                  onTap: () {
+                    // Handle the announcement submission here
+                    String announcement = _announcementController.text;
+                    Map<String, String> annoucements = {
+                      'title': _titleController.text,
+                      'description': _announcementController.text,
                     };
+                    if (announcement.isNotEmpty) {
+                      dbRef.push().set(annoucements).then((_) {
+                        Flushbar(
+                          title: "Result Notice Sent",
+                          message:
+                              "Result Notice ${_announcementController.text} posted",
+                          duration: Duration(seconds: 10),
+                          icon: Icon(Icons.done_outline_rounded,
+                              color: Colors.white),
+                          backgroundColor: Color.fromARGB(255, 97, 106, 109)
+                              .withOpacity(0.6),
+                          flushbarPosition: FlushbarPosition.TOP,
+                          animationDuration: Duration(milliseconds: 500),
+                          borderRadius: BorderRadius.circular(10),
+                          margin: EdgeInsets.all(8.0),
+                          onTap: (flushbar) {
+                            flushbar.dismiss();
+                          },
+                        ).show(context);
 
-                    await dbRef!.push().set(resultNotice).then((_) {
-                      Get.showSnackbar(
-                        GetSnackBar(
-                        titleText: Text("Results Uploaded"),
-                        backgroundColor: Colors.black45,
-                        snackPosition: SnackPosition.BOTTOM,
-                        title: "Result Uploaded",
-                        message:
-                            "Results Notice has been sent to ${_departmentController.text} students!",
-                      ));
-                      setState(() {
-                        _isLoading = false;
+                        _titleController.text = "";
+                        _announcementController.text = "";
+                      }).catchError((_) {
+                        Flushbar(
+                          title: "Assignment Post Error",
+                          message:
+                              "Assignment ${_announcementController.text} Error",
+                          duration: Duration(seconds: 10),
+                          icon: Icon(Icons.done_outline_rounded,
+                              color: Colors.white),
+                          backgroundColor:
+                              Color.fromARGB(255, 237, 51, 51).withOpacity(0.6),
+                          flushbarPosition: FlushbarPosition.TOP,
+                          animationDuration: Duration(milliseconds: 300),
+                          borderRadius: BorderRadius.circular(10),
+                          margin: EdgeInsets.all(8.0),
+                          onTap: (flushbar) {
+                            flushbar.dismiss();
+                          },
+                        ).show(context);
                       });
-                    });
-                    if (_formKey.currentState!.validate()) {
-                      // Process and save the form data here
-                      // For example, you can send it to a server
                     }
                   },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                    ),
+                    margin: const EdgeInsets.only(top: 20),
+                    child: Center(
+                      child: Text(
+                        "Send Announcement",
+                        style: GoogleFonts.montserrat(
+                            textStyle: subheaderBoldbtnwhite),
+                      ),
+                    ),
+                    height: 50,
+                    width: 300,
+                    decoration: BoxDecoration(
+                        color: AppColor.mainBlue,
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              task != null ? buildUploadStatus(task!) : Container(),
-            ],
-          ),
-        ),
+              ],
+            )),
       ),
     );
   }
-
-  Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-      allowCompression: true,
-    );
-
-    if (result == null) return;
-    final path = result.files.single.path!;
-    setState(() => file = File(path));
-  }
-
-  Future uploadFile() async {
-    if (file == null) return;
-
-    final fileName = basename(file!.path);
-    final destination = 'Results/$fileName';
-
-    task = FirebaseApi.uploadFile(destination, file!);
-    setState(() {});
-
-    if (task == null) return;
-
-    final snapshot = await task!.whenComplete(() {});
-    final urlDownload = await snapshot.ref.getDownloadURL();
-
-    print('Download-Link: $urlDownload');
-    setState(() {
-      fileUrl = urlDownload;
-    });
-  }
-
-  Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
-        stream: task.snapshotEvents,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final snap = snapshot.data!;
-            final progress = snap.bytesTransferred / snap.totalBytes;
-            final percentage = (progress * 100).toStringAsFixed(2);
-
-            return Text(
-              '$percentage %',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            );
-          } else {
-            return Container();
-          }
-        },
-      );
 }

@@ -17,8 +17,8 @@ class _ComplaintsState extends State<Complaints> {
   List<MessageModule> messages = [
     MessageModule("assets/profile.jpg", "Mathematees",
         "I don't get you sir hbsddgfdbfdbfdbfbfbfbfdjhhdhdhdhdhdh"),
-    MessageModule("assets/profile.jpg", "Mathematees", "I don't get you sir "),
-    MessageModule("assets/profile.jpg", "Mathematees", "I don't get you sir "),
+    MessageModule("assets/user.png", "Mathematees", "I don't get you sir "),
+    MessageModule("assets/user.png", "Mathematees", "I don't get you sir "),
   ];
   @override
   Widget build(BuildContext context) {
@@ -77,41 +77,3 @@ class _ComplaintsState extends State<Complaints> {
 }
 
 
-//  Column(
-//           children: [
-//             Row(
-//               children: [
-//                 Container(
-//                   margin: const EdgeInsets.only(left: 10),
-//                   child: Text(
-//                     "All Messages",
-//                     style: GoogleFonts.roboto(
-//                         fontSize: 18,
-//                         fontWeight: FontWeight.w400,
-//                         color: AppColor.btnBlue),
-//                   ),
-//                 ),
-//                 Container(
-//                   margin: const EdgeInsets.only(left: 10),
-//                   padding: const EdgeInsets.only(bottom: 2),
-//                   height: 20,
-//                   width: 30,
-//                   decoration: BoxDecoration(
-//                       color: AppColor.mainBlueOpc,
-//                       borderRadius: BorderRadius.circular(12)),
-//                   child: Container(
-//                     margin: const EdgeInsets.only(
-//                       left: 10,
-//                     ),
-//                     child: Text(
-//                       mess.length.toString(),
-//                       style: GoogleFonts.roboto(
-//                           color: Colors.white, fontWeight: FontWeight.w600),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-            
-//           ],
-//         ),

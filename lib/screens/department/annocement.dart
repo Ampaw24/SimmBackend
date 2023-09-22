@@ -90,7 +90,7 @@ class _DepartmentAnnoucementsState extends State<DepartmentAnnoucements> {
                         Flushbar(
                           title: "Announcement Sent",
                           message:
-                              "Assignment ${_announcementController.text} posted",
+                              "Announcement ${_announcementController.text} posted",
                           duration: Duration(seconds: 10),
                           icon: Icon(Icons.done_outline_rounded,
                               color: Colors.white),

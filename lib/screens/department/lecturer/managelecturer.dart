@@ -48,16 +48,25 @@ class _ManageLecturerState extends State<ManageLecturer> {
                   !snapShot.hasError &&
                   snapShot.data?.snapshot.value != null) {
                 Map _lecturerCollections = snapShot.data?.snapshot.value as Map;
-                List _newsItems = [];
+                List _userItems = [];
                 _lecturerCollections.forEach(
-                    (index, data) => _newsItems.add({"key": index, ...data}));
+                    (index, data) => _userItems.add({"key": index, ...data}));
+
                 return ListView.builder(
-                    itemCount: messages.length,
+                    itemCount: _userItems.length,
                     itemBuilder: (context, index) {
                       return Card(
+                        elevation: 7,
+                        color: Colors.white,
                         child: ListTile(
-                            title: Text(_newsItems[index]['LecturerName']),
-                            subtitle: Text(_newsItems[index]['Course-Lecture']),
+                            trailing: IconButton(
+                                color: Colors.redAccent,
+                                onPressed: () {},
+                                icon: Icon(Icons.delete)),
+                            leading: ClipRRect(
+                                child: Image.asset('assets/user.png')),
+                            title: Text(_userItems[index]['LecturerName']),
+                            subtitle: Text(_userItems[index]['Course-Lecture']),
                             onTap: () {
                               print(
                                   'Tapped on message: ${messages[index].message}');
