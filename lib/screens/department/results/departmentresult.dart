@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unused_field, prefer_final_fields, sort_child_properties_last
 
-import 'package:another_flushbar/flushbar.dart';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -88,44 +88,12 @@ class _DepartmentResultState extends State<DepartmentResult> {
                     };
                     if (announcement.isNotEmpty) {
                       dbRef.push().set(annoucements).then((_) {
-                        Flushbar(
-                          title: "Result Notice Sent",
-                          message:
-                              "Result Notice ${_announcementController.text} posted",
-                          duration: Duration(seconds: 10),
-                          icon: Icon(Icons.done_outline_rounded,
-                              color: Colors.white),
-                          backgroundColor: Color.fromARGB(255, 97, 106, 109)
-                              .withOpacity(0.6),
-                          flushbarPosition: FlushbarPosition.TOP,
-                          animationDuration: Duration(milliseconds: 500),
-                          borderRadius: BorderRadius.circular(10),
-                          margin: EdgeInsets.all(8.0),
-                          onTap: (flushbar) {
-                            flushbar.dismiss();
-                          },
-                        ).show(context);
+                      
 
                         _titleController.text = "";
                         _announcementController.text = "";
                       }).catchError((_) {
-                        Flushbar(
-                          title: "Assignment Post Error",
-                          message:
-                              "Assignment ${_announcementController.text} Error",
-                          duration: Duration(seconds: 10),
-                          icon: Icon(Icons.done_outline_rounded,
-                              color: Colors.white),
-                          backgroundColor:
-                              Color.fromARGB(255, 237, 51, 51).withOpacity(0.6),
-                          flushbarPosition: FlushbarPosition.TOP,
-                          animationDuration: Duration(milliseconds: 300),
-                          borderRadius: BorderRadius.circular(10),
-                          margin: EdgeInsets.all(8.0),
-                          onTap: (flushbar) {
-                            flushbar.dismiss();
-                          },
-                        ).show(context);
+                       
                       });
                     }
                   },

@@ -1,6 +1,5 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors, unnecessary_null_comparison, unused_local_variable, avoid_unnecessary_containers, prefer_final_fields
 import 'dart:io';
-import 'package:another_flushbar/flushbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -231,6 +230,9 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                             ),
                             GestureDetector(
                               onTap: () async {
+                                setState(() {
+                                  isLoading = true;
+                                });
                                 await uploadFile();
                                 Map<String, String> assignment = {
                                   'title': assignmentTitleController.text,
@@ -242,9 +244,6 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                                 };
 
                                 dbRef.push().set(assignment).then((_) {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
                                   Get.showSnackbar(GetSnackBar(
                                     title: "Assignment Sent",
                                     message:
@@ -254,34 +253,15 @@ class _ManageAssignmentState extends State<ManageAssignment> {
                                     snackPosition: SnackPosition.BOTTOM,
                                   ));
 
-                                  setState(() {
-                                    isLoading = false;
-                                  });
                                   assignmentTitleController.text = "";
                                   assignmentDescriptionController.text = "";
                                   _submitTime.text = "";
                                   _submitDate.text = " ";
-                                }).catchError((_) {
-                                  Flushbar(
-                                    title: "Assignment Post Error",
-                                    message:
-                                        "Assignment ${assignmentTitleController.text} Error",
-                                    duration: Duration(seconds: 4),
-                                    icon: Icon(Icons.done_outline_rounded,
-                                        color: Colors.white),
-                                    backgroundColor:
-                                        Color.fromARGB(255, 237, 51, 51)
-                                            .withOpacity(0.6),
-                                    flushbarPosition: FlushbarPosition.TOP,
-                                    animationDuration:
-                                        Duration(milliseconds: 300),
-                                    borderRadius: BorderRadius.circular(10),
-                                    margin: EdgeInsets.all(8.0),
-                                    onTap: (flushbar) {
-                                      flushbar.dismiss();
-                                    },
-                                  ).show(context);
-                                });
+
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                }).catchError((_) {});
                               },
                               child: Container(
                                 padding: const EdgeInsets.symmetric(

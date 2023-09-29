@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/screens/lectureview/announcements.dart';
 import 'package:simbackend/screens/lectureview/assignmentpage.dart';
@@ -37,13 +38,20 @@ List<DashboardCard> cardcontent = [
       title: "Announce \nment",
       cardIcon: FontAwesomeIcons.bullhorn,
       cardColor: AppColor.mainBlue),
-
   DashboardCard(
       navigate: ProfilePage(),
       title: "Profile",
       cardIcon: FontAwesomeIcons.userPen,
       cardColor: AppColor.mainBlue),
 ];
+String removeAt(String mail) {
+  int atIndex = mail.indexOf("@");
+  if (atIndex != -1) {
+    return mail.substring(0, atIndex);
+  } else {
+    return mail;
+  }
+}
 
 class _LecturerDashboardState extends State<LecturerDashboard> {
   @override
@@ -57,34 +65,30 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
             actions: [
               Text(
                 "Hello,",
-                style: GoogleFonts.montserrat(fontSize: 23),
+                style: GoogleFonts.montserrat(fontSize: 15),
               ),
               SizedBox(
                 width: 7,
               ),
               Text(
-                "Lecturer",
+                removeAt(FirebaseAuth.instance.currentUser!.email.toString()),
                 style: GoogleFonts.montserrat(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w300,
                     color: AppColor.btnBlue),
               ),
               SizedBox(
-                width: 110,
+                width: 70,
               ),
-              GestureDetector(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfilePage())),
-                child: Container(
-                  margin: const EdgeInsets.only(right: 20),
-                  height: 35,
-                  width: 35,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/catprofile.JPG"),
-                          fit: BoxFit.cover),
-                      borderRadius: BorderRadius.circular(20)),
-                ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                child: OutlinedButton.icon(
+                    onPressed: () {
+                      Get.to(ProfilePage());
+                    },
+                    icon: Icon(Icons.person),
+                    label: Text("Profile")),
               )
             ],
             backgroundColor: Colors.white,
@@ -94,10 +98,10 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: const EdgeInsets.only(left: 15),
+            margin: const EdgeInsets.only(left: 35),
             child: Text(
               "Dashboard",
-              style: GoogleFonts.montserrat(textStyle: headerbold1),
+              style: GoogleFonts.montserrat(textStyle: headerboldblue2),
             ),
           ),
           Expanded(

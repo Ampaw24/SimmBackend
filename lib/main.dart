@@ -5,6 +5,7 @@ import 'package:simbackend/screens/selectpage.dart';
 import 'package:get/get.dart';
 import 'package:simbackend/utils/colors.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();

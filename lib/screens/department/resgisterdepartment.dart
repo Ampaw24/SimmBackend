@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, missing_required_param, use_build_context_synchronously
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -173,23 +172,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             builder: (context) => DepartmentLogin(),
                           ),
                         );
-                        Flushbar(
-                          title: "SignUp Success",
-                          message:
-                              "${_nameController.text} Department Successfully Added \n New department id for sim App is ${_studentIdController.text.trim()}@simatu.com}",
-                          duration: Duration(seconds: 4),
-                          icon: Icon(Icons.done_outline_rounded,
-                              color: Colors.white),
-                          backgroundColor:
-                              Color.fromARGB(255, 52, 59, 61).withOpacity(0.6),
-                          flushbarPosition: FlushbarPosition.TOP,
-                          animationDuration: Duration(milliseconds: 500),
-                          borderRadius: BorderRadius.circular(10),
-                          margin: EdgeInsets.all(8.0),
-                          onTap: (flushbar) {
-                            flushbar.dismiss();
-                          },
-                        ).show(context);
+                       
                       } else {
                         print("$result");
                       }

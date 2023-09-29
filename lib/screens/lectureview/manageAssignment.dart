@@ -18,7 +18,7 @@ class Assignments extends StatefulWidget {
 
 class _AssignmentsState extends State<Assignments> {
   final _assignmentCollection = FirebaseDatabase.instance.ref('Assignment');
-
+ bool isLoading = false;
   deleteMessage(key) {
     _assignmentCollection.child(key).remove();
   }
@@ -30,7 +30,7 @@ class _AssignmentsState extends State<Assignments> {
     super.initState();
     dbRef = FirebaseDatabase.instance.ref().child('Assignment');
   }
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,16 +42,17 @@ class _AssignmentsState extends State<Assignments> {
                 !snapShot.hasError &&
                 snapShot.data?.snapshot.value != null) {
               Map _reportCollections = snapShot.data?.snapshot.value as Map;
-              List _reportItems = [];
+              List _assItems = [];
 
               _reportCollections.forEach(
-                  (index, data) => _reportItems.add({"key": index, ...data}));
-              _reportCount = _reportItems.length;
+                  (index, data) => _assItems.add({"key": index, ...data}));
+
               return ListView.builder(
-                  itemCount: _reportItems.length,
+                  itemCount: _assItems.length,
                   itemBuilder: (context, index) {
                     return Card(
-                      margin: const EdgeInsets.symmetric(vertical: 15),
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 10),
                       elevation: 5,
                       color: Colors.white,
                       child: ListTile(
@@ -75,11 +76,11 @@ class _AssignmentsState extends State<Assignments> {
                               ),
                             ),
                           ),
-                          title: Text(_reportItems[index]['title']),
+                          title: Text(_assItems[index]['title']),
                           subtitle: Text(
-                              "Submission: ${_reportItems[index]['submission-date']} "),
+                              "Submission: ${_assItems[index]['submission-date']} "),
                           onTap: () {
-                            deleteMessage(_reportItems[index]['key']);
+                            deleteMessage(_assItems[index]['key']);
                           }),
                     );
                   });
@@ -89,17 +90,3 @@ class _AssignmentsState extends State<Assignments> {
     );
   }
 }
-
-
-
-// (context, snapShot) {
-//                 if (snapShot.hasData &&
-//                     !snapShot.hasError &&
-//                     snapShot.data?.snapshot.value != null) {
-//                   Map _reportCollections = snapShot.data?.snapshot.value as Map;
-//                   List  _reportItems = [];
-
-//                   _reportCollections.forEach((index, data) =>
-//                       _reportItems.add({"key": index, ...data}));
-//                   _reportCount = _reportItems.length;
-  // final _reportCollection = FirebaseDatabase.instance.ref('Victim Report');

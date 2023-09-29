@@ -1,6 +1,8 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/screens/department/lecturer/lecturer.dart';
 import 'package:simbackend/screens/department/profileupdate.dart';
@@ -43,19 +45,18 @@ class _DepartmentDashboardState extends State<DepartmentDashboard> {
                 width: 110,
               ),
               GestureDetector(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ProfileUpdate())),
-                child: Container(
-                  margin: const EdgeInsets.only(right: 20),
-                  height: 35,
-                  width: 35,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/catprofile.JPG"),
-                          fit: BoxFit.cover),
-                      borderRadius: BorderRadius.circular(20)),
-                ),
-              )
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ProfileUpdate())),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    child: OutlinedButton.icon(
+                        onPressed: () {
+                          Get.to(ProfileUpdate());
+                        },
+                        icon: Icon(Icons.person),
+                        label: Text("Profile")),
+                  ))
             ],
             backgroundColor: Colors.white,
           ),
