@@ -17,7 +17,8 @@ class _ComplaintsState extends State<Complaints> {
   List<MessageModule> messages = [
     MessageModule("assets/profile.jpg", "Mathematees",
         "I don't get you sir hbsddgfdbfdbfdbfbfbfbfdjhhdhdhdhdhdh"),
-    MessageModule("assets/user.png", "Mathematees", "I don't get you sir "),
+    MessageModule("assets/user.png", "Mathematees",
+        "I don't get you sir heerrsttddfsarsrsrsrsrsdhdfjgvbdfhgbdhfgbdfgbuedfguhsdb "),
     MessageModule("assets/user.png", "Mathematees", "I don't get you sir "),
   ];
   @override
@@ -45,15 +46,14 @@ class _ComplaintsState extends State<Complaints> {
               color: Colors.white,
               child: ListTile(
                   leading: CircleAvatar(
-                    // You can use an image here for the user profile picture
-                    backgroundColor: Colors.blue,
-                    child: Text(
-                      messages[index]
-                          .userProfileImage, // Display the first letter of the username
-                      style: TextStyle(color: Colors.white),
-                    ),
+                      backgroundColor: Colors.blue,
+                      child: Icon(
+                        Icons.mail,
+                        color: Colors.white,
+                      )),
+                  title: Text(
+                    messages[index].userName,
                   ),
-                  title: Text(messages[index].userName),
                   subtitle: ReadMoreText(
                     messages[index].message,
                     trimLines: 1,
@@ -75,5 +75,3 @@ class _ComplaintsState extends State<Complaints> {
     );
   }
 }
-
-

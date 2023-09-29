@@ -35,6 +35,13 @@ class _DepartmentDashboardState extends State<DepartmentDashboard> {
       backgroundColor: Colors.white,
       appBar: PreferredSize(
           child: AppBar(
+            centerTitle: true,
+            title: Text(
+              "",
+              style: GoogleFonts.montserrat(
+                color: AppColor.btnBlue,
+              ),
+            ),
             leading: GestureDetector(
                 onTap: () {
                   _scaffoldKey.currentState!.openDrawer();
