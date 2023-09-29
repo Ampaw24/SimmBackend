@@ -1,5 +1,6 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors, unnecessary_brace_in_string_interps
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -214,11 +215,11 @@ class _LecturerFormState extends State<LecturerForm> {
                       "Course-Lecture": _specController.text,
                       "Birth Date": _dateController.text,
                     };
-                    String result = await _fireAuth.signUp(
-                      email: "${_usernameController.text.trim()}@simatu.com",
-                      password: _passwordController.text,
-                    );
                     dbRef!.push().set(lecturer).then((_) {
+                      FirebaseAuth.instance.signInWithEmailAndPassword(
+                          email:
+                              "${_usernameController.text.trim()}@simatu.com",
+                          password: _passwordController.text);
                       Get.snackbar("Lecturer Added",
                           "Lecturer ${_nameController.text} added Successfully!!",
                           duration: Duration(seconds: 5),

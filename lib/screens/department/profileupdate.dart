@@ -101,7 +101,7 @@ class _ProfileUpdateState extends State<ProfileUpdate> {
                               border: OutlineInputBorder(),
                               labelText: 'Password',
                             ),
-                            // validator: _validatePassword(),
+                          
                           ),
                         ),
                         height: 50,
