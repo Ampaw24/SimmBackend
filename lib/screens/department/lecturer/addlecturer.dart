@@ -28,6 +28,7 @@ class LecturerForm extends StatefulWidget {
 }
 
 class _LecturerFormState extends State<LecturerForm> {
+  final FireAuth _fireAuth = FireAuth();
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -61,7 +62,6 @@ class _LecturerFormState extends State<LecturerForm> {
     dbRef = FirebaseDatabase.instance.ref().child('Lecturers');
   }
 
-  FireAuth _fireAuth = FireAuth();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -215,11 +215,12 @@ class _LecturerFormState extends State<LecturerForm> {
                       "Course-Lecture": _specController.text,
                       "Birth Date": _dateController.text,
                     };
+                    String result = await _fireAuth.signUp(
+                      email: "${_usernameController.text.trim()}@simatu.com",
+                      name: _nameController.text,
+                      password: _passwordController.text,
+                    );
                     dbRef!.push().set(lecturer).then((_) {
-                      FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email:
-                              "${_usernameController.text.trim()}@simatu.com",
-                          password: _passwordController.text);
                       Get.snackbar("Lecturer Added",
                           "Lecturer ${_nameController.text} added Successfully!!",
                           duration: Duration(seconds: 5),
