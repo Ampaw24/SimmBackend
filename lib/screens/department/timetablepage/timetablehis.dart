@@ -4,26 +4,28 @@ import 'package:flutter/material.dart';
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:readmore/readmore.dart';
 import 'package:simbackend/utils/colors.dart';
 import 'package:simbackend/modules/messagemodeule.dart';
 
-class ManageLecturer extends StatefulWidget {
-  const ManageLecturer({super.key});
+class TimeTableHistory extends StatefulWidget {
+  const TimeTableHistory({super.key});
 
   @override
-  State<ManageLecturer> createState() => _ManageLecturerState();
+  State<TimeTableHistory> createState() => _TimeTableHistoryState();
 }
 
-class _ManageLecturerState extends State<ManageLecturer> {
+class _TimeTableHistoryState extends State<TimeTableHistory> {
   List<MessageModule> messages = [];
-  final _lecturerCollection = FirebaseDatabase.instance.ref('Lecturers');
+  final _lecturerCollection = FirebaseDatabase.instance.ref('TimeTable');
   DatabaseReference? dbRef;
   @override
   void initState() {
     super.initState();
-    dbRef = FirebaseDatabase.instance.ref().child('Lecturers');
+    dbRef = FirebaseDatabase.instance.ref().child('TimeTable');
   }
-     deleteMessage(key) {
+
+  deleteMessage(key) {
     _lecturerCollection.child(key).remove();
   }
 
@@ -31,19 +33,6 @@ class _ManageLecturerState extends State<ManageLecturer> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(60),
-            child: AppBar(
-              backgroundColor: Colors.white,
-              centerTitle: true,
-              title: Text(
-                "Manage Lecturers",
-                style: GoogleFonts.montserrat(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600,
-                    color: AppColor.btnBlue),
-              ),
-            )),
         body: StreamBuilder(
             stream: _lecturerCollection.onValue,
             builder: (context, snapShot) {
@@ -62,20 +51,29 @@ class _ManageLecturerState extends State<ManageLecturer> {
                         elevation: 7,
                         color: Colors.white,
                         child: ListTile(
+                            subtitle: ReadMoreText(
+                              "Notice: ${_userItems[index]['description']}",
+                              trimLines: 1,
+                              colorClickableText: Colors.pink,
+                              trimMode: TrimMode.Line,
+                              trimCollapsedText: 'show more',
+                              trimExpandedText: ' show less',
+                              lessStyle: TextStyle(color: AppColor.btnBlue),
+                              moreStyle: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.blueAccent),
+                            ),
                             trailing: IconButton(
                                 color: Colors.redAccent,
                                 onPressed: () {
-                                    deleteMessage(_userItems[index]['key']);
+                                  deleteMessage(_userItems[index]['key']);
                                 },
                                 icon: Icon(Icons.delete)),
-                            leading: ClipRRect(
-                                child: Image.asset('assets/user.png')),
-                            title: Text(_userItems[index]['LecturerName']),
-                            subtitle: Text(_userItems[index]['Course-Lecture']),
-                            onTap: () {
-                              print(
-                                  'Tapped on message: ${messages[index].message}');
-                            }),
+                            leading:
+                                ClipRRect(child: Icon(Icons.file_copy_rounded)),
+                            title: Text(_userItems[index]['title']),
+                            onTap: () {}),
                       );
                     });
               }

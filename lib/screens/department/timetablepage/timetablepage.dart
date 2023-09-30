@@ -1,5 +1,4 @@
-// ignore_for_file: sort_child_properties_last, prefer_const_constructors, unnecessary_null_comparison, unused_local_variable
-
+// ignore_for_file: sort_child_properties_last, prefer_const_constructors, unnecessary_null_comparison, unused_local_variable, avoid_unnecessary_containers, prefer_final_fields
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -7,9 +6,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/firebase/firebaseapi.dart';
+import 'package:simbackend/screens/department/timetablepage/timetablehis.dart';
+import 'package:simbackend/screens/lectureview/loc.dart';
+import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
-
-import '../../../core/text.dart';
+import 'TimetablePage.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
+import 'package:path/path.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get/get.dart';
 
 class TimetablePage extends StatefulWidget {
   const TimetablePage({super.key});
@@ -22,87 +28,93 @@ class _TimetablePageState extends State<TimetablePage> {
   TextEditingController assignmentTitleController = TextEditingController();
   TextEditingController assignmentDescriptionController =
       TextEditingController();
-
+  // ignore: prefer_final_fields
+  TextEditingController _submitTime = TextEditingController();
+  TextEditingController _submitDate = TextEditingController();
   final storageRef = FirebaseStorage.instance.ref();
+  DateTime selectedDate = DateTime.now();
 
   String selectedFileName = "Attach File";
   String? filename;
   PlatformFile? pickedFile;
-  bool isLoading = false;
+  bool _isLoading = false;
   File? fileToDisplay;
 
+  File? file;
+  // ignore: prefer_const_declarations
+  static final String title = 'Firebase Upload';
+  UploadTask? task;
+  late DatabaseReference dbRef;
+  late String downloadUrl;
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      allowCompression: true,
+    );
 
-  Future<void> _pickFile() async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        allowMultiple: false,
-        allowedExtensions: ["doc", "pdf", "docx", "jpg"],
-        type: FileType.any,
-        allowCompression: true,
-      );
+    if (result == null) return;
+    final path = result.files.single.path!;
 
-      if (result != null) {
-        final filePath = result.files.single.path!;
-        pickedFile = result.files.first;
-        filename = result.files.first.name;
-
-        setState(() => fileToDisplay = File(filePath));
-
-        fileToDisplay = File(pickedFile!.path.toString());
-      } else {}
-      setState(() {
-        isLoading = false;
-      });
-    } catch (e) {}
+    setState(() => file = File(path));
   }
 
-  late DatabaseReference dbRef;
-
   Future uploadFile() async {
-    if (fileToDisplay == null) {
-      final fileName = fileToDisplay!.path;
-      final destination = 'Assignment/${fileName}';
+    if (file == null) return;
 
-      FirebaseApi.uploadFile(destination, fileToDisplay!);
-    }
+    final fileName = basename(file!.path);
+    final destination = 'TimeTable/$fileName';
+
+    task = FirebaseApi.uploadFile(destination, file!);
+    setState(() {});
+
+    if (task == null) return;
+
+    final snapshot = await task!.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    downloadUrl = urlDownload;
+
+    print('Download-Link: $urlDownload');
   }
 
   @override
   void initState() {
     super.initState();
-    dbRef = FirebaseDatabase.instance.ref().child('Assignment');
+    dbRef = FirebaseDatabase.instance.ref().child('TimeTable');
   }
 
   @override
   Widget build(BuildContext context) {
-    final sfileName =
-        fileToDisplay != null ? fileToDisplay!.path : "No file selected";
+    final fileName = file != null ? basename(file!.path) : 'No File Selected';
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-            preferredSize: Size.fromHeight(100),
+            preferredSize: Size.fromHeight(80),
             child: AppBar(
               centerTitle: true,
               bottom: TabBar(indicatorColor: AppColor.btnBlue, tabs: [
                 Text(
-                  "Upload Timetable",
-                  style: GoogleFonts.montserrat(),
+                  "Create",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 15,
+                      color: AppColor.btnBlue,
+                      fontWeight: FontWeight.w300),
                 ),
                 Text(
-                  "History",
-                  style: GoogleFonts.montserrat(),
+                  "Manage",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 15,
+                      color: AppColor.btnBlue,
+                      fontWeight: FontWeight.w300),
                 )
               ]),
               title: Text(
-                "TimeTables",
+                "Timetable Notice",
                 style: GoogleFonts.montserrat(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
                     color: AppColor.btnBlue),
               ),
             )),
@@ -111,85 +123,110 @@ class _TimetablePageState extends State<TimetablePage> {
             Tab(
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Program',
+                        'Title',
                         style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       TextFormField(
                         controller: assignmentTitleController,
                         decoration: InputDecoration(
-                            hintText: 'Enter Program.. e.g computer Science',
-                            hintStyle: TextStyle(
-                                fontSize: 10,
-                                color: const Color.fromARGB(255, 95, 95, 95),
-                                fontStyle: FontStyle.italic)),
-                      ),
-                      SizedBox(height: 30),
-                      SizedBox(height: 16),
-                      Container(
-                        height: 30,
-                        width: 300,
-                        child: Center(
-                          child: Text(sfileName),
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter title',
                         ),
                       ),
-                      GestureDetector(
-                        onTap: _pickFile,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                          ),
-                          margin: const EdgeInsets.only(top: 20),
-                          child: Center(
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Icon(
-                                  Icons.attach_file,
-                                  color: Colors.white,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Text(
-                                  "Choose File",
-                                  style: GoogleFonts.montserrat(
-                                      textStyle: subheaderBoldbtnwhite),
-                                ),
-                              ],
+                      SizedBox(height: 25),
+                      Text(
+                        'Description',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: assignmentDescriptionController,
+                        maxLines: 3,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Enter description',
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        child: Center(
+                          child: OutlinedButton(
+                            style: ButtonStyle(
+                              alignment: Alignment.center,
+                            ),
+                            onPressed: selectFile,
+                            child: SizedBox(
+                              width: 250,
+                              height: 20,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.file_upload,
+                                    color: AppColor.btnBlue,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Flexible(
+                                    child: RichText(
+                                      overflow: TextOverflow.ellipsis,
+                                      strutStyle: StrutStyle(fontSize: 12.0),
+                                      text: TextSpan(
+                                          style: TextStyle(color: Colors.black),
+                                          text: fileName),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          height: 50,
-                          width: 300,
-                          decoration: BoxDecoration(
-                              color: AppColor.mainBlue,
-                              borderRadius: BorderRadius.circular(10)),
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          await uploadFile();
                           Map<String, String> assignment = {
                             'title': assignmentTitleController.text,
                             'description': assignmentDescriptionController.text,
+                            'file-url': downloadUrl,
                           };
-                          uploadFile();
 
                           dbRef.push().set(assignment).then((_) {
-                          
+                            GetSnackBar(
+                                title: "Notice Sent",
+                                message:
+                                    "Timetable Notice ${assignmentTitleController.text} posted",
+                                animationDuration: Duration(seconds: 2),
+                                isDismissible: true,
+                                snackPosition: SnackPosition.TOP);
 
                             assignmentTitleController.text = "";
                             assignmentDescriptionController.text = "";
+
+                            setState(() {
+                              _isLoading = false;
+                            });
                           }).catchError((_) {
-                          
+                            setState(() {
+                              _isLoading = false;
+                            });
                           });
                         },
                         child: Container(
@@ -211,13 +248,19 @@ class _TimetablePageState extends State<TimetablePage> {
                               borderRadius: BorderRadius.circular(10)),
                         ),
                       ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      _isLoading
+                          ? Center(child: CircularProgressIndicator())
+                          : Container(),
                     ],
                   ),
                 ),
               ),
             ),
             Tab(
-              child: Container(),
+              child: TimeTableHistory(),
             )
           ],
         ),
