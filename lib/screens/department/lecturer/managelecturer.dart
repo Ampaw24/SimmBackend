@@ -74,7 +74,7 @@ class _ManageLecturerState extends State<ManageLecturer> {
                       );
                     });
               }
-              return Container();
+              return Center(child: CircularProgressIndicator());
             }));
   }
 }

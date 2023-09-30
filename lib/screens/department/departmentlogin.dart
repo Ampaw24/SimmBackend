@@ -180,11 +180,7 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                                             ),
                                             transition: Transition.downToUp,
                                           );
-                                          // Navigator.pushReplacement(
-                                          //     context,
-                                          //     MaterialPageRoute(
-                                          //         builder: (context) =>
-                                          //             LecturerDashboard()));
+                           
                                         }
                                       } catch (e) {
                                         print(e);
@@ -219,7 +215,7 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                                             Transition.rightToLeftWithFade),
                                     child: Center(
                                       child: Text(
-                                        "--Add Department Account--",
+                                        "-- Add Department Account --",
                                         style: GoogleFonts.lato(
                                             textStyle: TextStyle(
                                                 color: AppColor.btnBlue,

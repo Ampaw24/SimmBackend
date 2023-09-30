@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, unused_field, prefer_final_fields, sort_child_properties_last
 
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:simbackend/utils/colors.dart';
@@ -23,6 +23,8 @@ class _DepartmentResultState extends State<DepartmentResult> {
   final _assignmentCollection =
       FirebaseDatabase.instance.ref('Department_Result');
   late DatabaseReference dbRef;
+  bool _isloading = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -50,6 +52,11 @@ class _DepartmentResultState extends State<DepartmentResult> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
+                _isloading
+                    ? CircularProgressIndicator(
+                        color: AppColor.btnBlue,
+                      )
+                    : Container(),
                 Text(
                   "Send Result Notice To Sudents",
                   style: GoogleFonts.montserrat(
@@ -87,13 +94,21 @@ class _DepartmentResultState extends State<DepartmentResult> {
                       'description': _announcementController.text,
                     };
                     if (announcement.isNotEmpty) {
+                      setState(() {
+                        _isloading = true;
+                      });
                       dbRef.push().set(annoucements).then((_) {
-                      
+                        Get.snackbar("Result Notice ",
+                            "Result Notice Sent to students sucess");
+                        setState(() {
+                          _isloading = false;
+                        });
 
                         _titleController.text = "";
                         _announcementController.text = "";
-                      }).catchError((_) {
-                       
+                      }).catchError((e) {
+                        Get.snackbar("Error:Result Notice ",
+                            "An Error Encountered ${e}");
                       });
                     }
                   },
