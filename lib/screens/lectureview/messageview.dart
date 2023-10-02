@@ -15,7 +15,6 @@ class Messages extends StatefulWidget {
 }
 
 class _MessagesState extends State<Messages> {
- 
   final _complaintCollection = FirebaseDatabase.instance.ref('Complaints');
   DatabaseReference? dbRef;
   @override
@@ -59,31 +58,29 @@ class _MessagesState extends State<Messages> {
                       elevation: 5,
                       color: Colors.white,
                       child: ListTile(
-                          leading: CircleAvatar(
-                              backgroundColor: Colors.blue,
-                              child: Icon(
-                                Icons.mail,
-                                color: Colors.white,
-                              )),
-                          title: Text(
-                            "STUDENT COMPLAINT",
-                          ),
-                          subtitle: ReadMoreText(
-                            "Address: ${_userItems[index]['address']} \n Message: ${_userItems[index]['text']}",
-                            trimLines: 1,
-                            colorClickableText: Colors.pink,
-                            trimMode: TrimMode.Line,
-                            trimCollapsedText: 'show more',
-                            trimExpandedText: ' show less',
-                            lessStyle: TextStyle(color: AppColor.btnBlue),
-                            moreStyle: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.blueAccent),
-                          ),
-
-                        
+                        leading: CircleAvatar(
+                            backgroundColor: Colors.blue,
+                            child: Icon(
+                              Icons.mail,
+                              color: Colors.white,
+                            )),
+                        title: Text(
+                          "STUDENT MESSAGES",
                         ),
+                        subtitle: ReadMoreText(
+                          "Address: ${_userItems[index]['address']} \n Message: ${_userItems[index]['text']}",
+                          trimLines: 1,
+                          colorClickableText: Colors.pink,
+                          trimMode: TrimMode.Line,
+                          trimCollapsedText: 'show more',
+                          trimExpandedText: ' show less',
+                          lessStyle: TextStyle(color: AppColor.btnBlue),
+                          moreStyle: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.blueAccent),
+                        ),
+                      ),
                     );
                   });
             }

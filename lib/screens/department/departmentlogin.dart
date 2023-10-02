@@ -28,6 +28,58 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
   final _auth = FirebaseAuth.instance;
   bool _isloading = false;
 
+  bool isErr = false;
+
+  void _signInwithMail() async {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+
+    setState(() {
+      _isloading = true;
+    });
+    try {
+      final user = await _auth.signInWithEmailAndPassword(
+          email: _staffIdController.text, password: _passwordController.text);
+      if (user != null) {
+        Future.delayed(
+            Duration(
+              seconds: 20,
+            ),
+            () => Get.to(DepartmentDashboard()));
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        setState(() {
+          _isloading = false;
+          isErr = true;
+          _staffIdController.text = "";
+          _passwordController.text = " ";
+        });
+      } else if (e.code == "account-exists-with-different-credential") {
+        setState(() {
+          isErr = true;
+          _isloading = false;
+        });
+      } else if (e.code == 'invalid-email') {
+        setState(() {
+          isErr = true;
+          _isloading = false;
+        });
+      } else {
+        setState(() {
+          _isloading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isloading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +159,18 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 20,
+                                    height: 10,
+                                  ),
+                                  isErr
+                                      ? Center(
+                                          child: Text(
+                                          "Invalid Username or password",
+                                          style: TextStyle(
+                                              color: Colors.redAccent),
+                                        ))
+                                      : Container(),
+                                  SizedBox(
+                                    height: 5,
                                   ),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
@@ -161,30 +224,8 @@ class _DepartmentLoginState extends State<DepartmentLogin> {
                                     width: 300,
                                   ),
                                   GestureDetector(
-                                    onTap: () async {
-                                      try {
-                                        setState(() {
-                                          _isloading =
-                                              true; // Start showing the loader
-                                        });
-                                        final user = await _auth
-                                            .signInWithEmailAndPassword(
-                                                email: _staffIdController.text,
-                                                password:
-                                                    _passwordController.text);
-                                        if (user != null) {
-                                          Get.to(
-                                            DepartmentDashboard(
-                                              departmentMail:
-                                                  _staffIdController.text,
-                                            ),
-                                            transition: Transition.downToUp,
-                                          );
-                           
-                                        }
-                                      } catch (e) {
-                                        print(e);
-                                      }
+                                    onTap: () {
+                                      _signInwithMail();
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(

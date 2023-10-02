@@ -1,4 +1,6 @@
 // ignore_for_file: sort_child_properties_last, prefer_const_constructors, must_be_immutable
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -17,8 +19,7 @@ import 'annocement.dart';
 import 'complaints.dart';
 
 class DepartmentDashboard extends StatefulWidget {
-  String departmentMail;
-  DepartmentDashboard({super.key, required this.departmentMail});
+  DepartmentDashboard({super.key});
 
   @override
   State<DepartmentDashboard> createState() => _DepartmentDashboardState();
@@ -31,7 +32,8 @@ class _DepartmentDashboardState extends State<DepartmentDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: NavDrawer(mail: widget.departmentMail),
+      drawer:
+          NavDrawer(mail: FirebaseAuth.instance.currentUser!.email.toString()),
       backgroundColor: Colors.white,
       appBar: PreferredSize(
           child: AppBar(
