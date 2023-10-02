@@ -57,7 +57,7 @@ class _SelectPageState extends State<SelectPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: const EdgeInsets.only(top: 120),
+                          margin: const EdgeInsets.only(top: 150),
                           child: Center(
                             child: Text(
                               "Welcome",
@@ -72,14 +72,16 @@ class _SelectPageState extends State<SelectPage> {
                         Center(
                           child: Container(
                             width: MediaQuery.of(context).size.width * 0.90,
-                            height: 300,
+                            height: 250,
                             child: Column(
                               children: [
                                 Container(
-                                  margin: const EdgeInsets.only(top: 60),
+                                  margin: const EdgeInsets.only(top: 30),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15),
                                   child: Center(
                                     child: Text(
-                                      "Select an option to begin...",
+                                      "Select an option to begin",
                                       style: GoogleFonts.montserrat(
                                           textStyle: subheaderBold),
                                     ),

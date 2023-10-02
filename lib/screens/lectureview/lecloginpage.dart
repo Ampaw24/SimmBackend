@@ -26,6 +26,57 @@ class _LecturerLoginState extends State<LecturerLogin> {
 
   final _auth = FirebaseAuth.instance;
   bool _isloading = false;
+  bool isErr = false;
+
+  void _signInwithMail() async {
+    FocusScopeNode currentFocus = FocusScope.of(context);
+
+    if (!currentFocus.hasPrimaryFocus) {
+      currentFocus.unfocus();
+    }
+
+    setState(() {
+      _isloading = true;
+    });
+    try {
+      final user = await _auth.signInWithEmailAndPassword(
+          email: _staffIdController.text, password: _passwordController.text);
+      if (user != null) {
+        Future.delayed(
+            Duration(
+              seconds: 20,
+            ),
+            () => Get.to(LecturerDashboard()));
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        setState(() {
+          _isloading = false;
+          isErr = true;
+          _staffIdController.text = "";
+          _passwordController.text = " ";
+        });
+      } else if (e.code == "account-exists-with-different-credential") {
+        setState(() {
+          isErr = true;
+          _isloading = false;
+        });
+      } else if (e.code == 'invalid-email') {
+        setState(() {
+          isErr = true;
+          _isloading = false;
+        });
+      } else {
+        setState(() {
+          _isloading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _isloading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +115,13 @@ class _LecturerLoginState extends State<LecturerLogin> {
                     Container(
                       child: Column(
                         children: [
+                          if (_isloading)
+                            Center(
+                                child: SpinKitThreeBounce(
+                              color: AppColor.btnBlue,
+                            )),
                           SizedBox(
-                            height: 100,
+                            height: 60,
                           ),
                           Container(
                             child: Center(
@@ -79,7 +135,7 @@ class _LecturerLoginState extends State<LecturerLogin> {
                           Container(
                             child: Center(
                               child: Text(
-                                "Enter  Login Credentials...",
+                                "Enter Login Credentials...",
                                 style: GoogleFonts.montserrat(
                                     textStyle: subheaderBold),
                               ),
@@ -106,7 +162,18 @@ class _LecturerLoginState extends State<LecturerLogin> {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 40,
+                                    height: 10,
+                                  ),
+                                  isErr
+                                      ? Center(
+                                          child: Text(
+                                          "Invalid Username or password",
+                                          style: TextStyle(
+                                              color: Colors.redAccent),
+                                        ))
+                                      : Container(),
+                                  SizedBox(
+                                    height: 20,
                                   ),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
@@ -116,7 +183,7 @@ class _LecturerLoginState extends State<LecturerLogin> {
                                       child: TextFormField(
                                         controller: _staffIdController,
                                         decoration: InputDecoration(
-                                          labelText: 'Staff ID',
+                                          labelText: 'Staff Mail',
                                           border: OutlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: AppColor.mainBlue),
@@ -160,25 +227,8 @@ class _LecturerLoginState extends State<LecturerLogin> {
                                     width: 300,
                                   ),
                                   GestureDetector(
-                                    onTap: () async {
-                                      try {
-                                        setState(() {
-                                          _isloading =
-                                              true; // Start showing the loader
-                                        });
-                                        final user = await _auth
-                                            .signInWithEmailAndPassword(
-                                                email: _staffIdController.text,
-                                                password:
-                                                    _passwordController.text);
-                                        if (user != null) {
-                                          Get.to(LecturerDashboard(),
-                                              transition:
-                                                  Transition.leftToRight);
-                                        }
-                                      } catch (e) {
-                                        print(e);
-                                      }
+                                    onTap: () {
+                                      _signInwithMail();
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -216,11 +266,6 @@ class _LecturerLoginState extends State<LecturerLogin> {
                               ),
                             ),
                           ),
-                          if (_isloading)
-                            Center(
-                                child: SpinKitThreeBounce(
-                              color: AppColor.btnBlue,
-                            ))
                         ],
                       ),
                     ),
@@ -234,21 +279,3 @@ class _LecturerLoginState extends State<LecturerLogin> {
     );
   }
 }
-
-
-//  try {
-//                                         final user = await _auth
-//                                             .signInWithEmailAndPassword(
-//                                                 email: _staffIdController.text,
-//                                                 password:
-//                                                     _passwordController.text);
-//                                         if (user != null) {
-//                                           Navigator.pushReplacement(
-//                                               context,
-//                                               MaterialPageRoute(
-//                                                   builder: (context) =>
-//                                                       LecturerDashboard()));
-//                                         }
-//                                       } catch (e) {
-//                                         print(e);
-//                                       }

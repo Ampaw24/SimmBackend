@@ -7,22 +7,26 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:simbackend/screens/department/departmenthome.dart';
+import 'package:simbackend/screens/department/departmentlogin.dart';
 import 'package:simbackend/screens/selectpage.dart';
 import 'package:simbackend/screens/text.dart';
 import 'package:simbackend/utils/colors.dart';
 import 'package:simbackend/utils/utils.dart';
-import 'lecturedashboard.dart';
 import 'package:image_picker/image_picker.dart';
 
-class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+class LProfileUpdate extends StatefulWidget {
+  const LProfileUpdate({super.key});
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  State<LProfileUpdate> createState() => _ProfileUpdateState();
 }
 
-class _ProfilePageState extends State<ProfilePage> {
+class _ProfileUpdateState extends State<LProfileUpdate> {
   GlobalKey _formkey = GlobalKey();
+  bool _isLoading = false;
+  final TextEditingController _passwordcontroller = TextEditingController();
+  final TextEditingController _Cpasswordcontroller = TextEditingController();
   Uint8List? _image;
   void _selectImage() async {
     Uint8List img = await pickImage(ImageSource.gallery);
@@ -53,58 +57,27 @@ class _ProfilePageState extends State<ProfilePage> {
             Stack(
               children: [
                 Center(
-                  child: _image != null
-                      ? Container(
-                          margin: const EdgeInsets.only(top: 30),
-                          height: 120,
-                          width: 120,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(60),
-                              image: DecorationImage(
-                                  image: MemoryImage(_image!),
-                                  fit: BoxFit.cover)),
-                        )
-                      : Container(
-                          margin: const EdgeInsets.only(top: 30),
-                          height: 120,
-                          width: 120,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(60),
-                              image: DecorationImage(
-                                  image: AssetImage('assets/catprofile.JPG'),
-                                  fit: BoxFit.cover)),
-                        ),
+                  child: Container(
+                    margin: const EdgeInsets.only(top: 30),
+                    height: 120,
+                    width: 120,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('assets/user.png'),
+                            fit: BoxFit.cover)),
+                  ),
                 ),
-                Positioned(
-                    top: 110,
-                    left: 210,
-                    child: GestureDetector(
-                      onTap: _selectImage,
-                      child: Container(
-                        child: Center(
-                          child: Icon(
-                            Icons.add_a_photo,
-                            weight: 10,
-                            color: Colors.white,
-                            size: 15,
-                          ),
-                        ),
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: AppColor.mainBlue,
-                        ),
-                      ),
-                    )),
               ],
             ),
-            Text(
-              "David Soweto",
-              style: GoogleFonts.roboto(textStyle: headerboldblue1),
+            SizedBox(
+              height: 10,
             ),
             Text(
-              "Lecturer",
+              FirebaseAuth.instance.currentUser!.email.toString(),
+              style: GoogleFonts.roboto(textStyle: headerboldblue2),
+            ),
+            Text(
+              "Lecturer Profile",
               style: GoogleFonts.roboto(),
             ),
             SizedBox(
@@ -119,30 +92,15 @@ class _ProfilePageState extends State<ProfilePage> {
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10,
                         ),
-                        child: Center(
-                          child: TextFormField(
-                            // controller: _staffIdController,
-                            decoration: InputDecoration(
-                              labelText: 'Staff Mail',
-                            ),
-                          ),
-                        ),
-                        height: 50,
-                        width: 300,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                        ),
                         margin: const EdgeInsets.only(top: 20),
                         child: Center(
                           child: TextFormField(
-                            // controller: _passwordController,
+                            controller: _passwordcontroller,
                             obscureText: true,
                             decoration: InputDecoration(
+                              border: OutlineInputBorder(),
                               labelText: 'Password',
                             ),
-                            // validator: _validatePassword(),
                           ),
                         ),
                         height: 50,
@@ -155,22 +113,44 @@ class _ProfilePageState extends State<ProfilePage> {
                         margin: const EdgeInsets.only(top: 20),
                         child: Center(
                           child: TextFormField(
-                            // controller: _passwordController,
+                            controller: _Cpasswordcontroller,
                             obscureText: true,
                             decoration: InputDecoration(
+                              border: OutlineInputBorder(),
                               labelText: 'Confirm Password',
                             ),
-                            // validator: _validatePassword(),
                           ),
                         ),
                         height: 50,
                         width: 300,
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LecturerDashboard())),
+                        onTap: () async {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          if (_passwordcontroller.text ==
+                              _Cpasswordcontroller.text) {
+                            await FirebaseAuth.instance.currentUser!
+                                .updatePassword(
+                                    _passwordcontroller.text.toString())
+                                .then((_) => Get.showSnackbar(GetSnackBar(
+                                      title: "Password Update Success",
+                                      message:
+                                          "Pasword Update for Department Successful",
+                                      snackPosition: SnackPosition.TOP,
+                                    )));
+                            _passwordcontroller.text = " ";
+                            _Cpasswordcontroller.text = " ";
+                          } else {
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    "An Error Occured while Updating Password")));
+                          }
+                        },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 10,

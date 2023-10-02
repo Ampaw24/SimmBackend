@@ -18,7 +18,7 @@ class Assignments extends StatefulWidget {
 
 class _AssignmentsState extends State<Assignments> {
   final _assignmentCollection = FirebaseDatabase.instance.ref('Assignment');
- bool isLoading = false;
+  bool isLoading = false;
   deleteMessage(key) {
     _assignmentCollection.child(key).remove();
   }
@@ -30,7 +30,7 @@ class _AssignmentsState extends State<Assignments> {
     super.initState();
     dbRef = FirebaseDatabase.instance.ref().child('Assignment');
   }
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,7 +85,9 @@ class _AssignmentsState extends State<Assignments> {
                     );
                   });
             }
-            return Container();
+            return Center(
+              child: SingleChildScrollView(),
+            );
           }),
     );
   }

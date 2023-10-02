@@ -143,7 +143,9 @@ class _AnnouncementsState extends State<Announcements> {
                       },
                     );
                   }
-                  return Container();
+                  return Center(
+                    child: SingleChildScrollView(),
+                  );
                 }),
           ),
         ),
@@ -240,13 +242,10 @@ class _AnnouncementsState extends State<Announcements> {
                                     };
 
                                     dbRef?.push().set(news).then((_) {
-                                     
                                       idcontroller.text = "";
                                       newsTitleController.text = "";
                                       newsDescriptionController.text = "";
-                                    }).catchError((_) {
-                                    
-                                    });
+                                    }).catchError((_) {});
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(

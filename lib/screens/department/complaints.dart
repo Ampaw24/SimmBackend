@@ -15,13 +15,7 @@ class Complaints extends StatefulWidget {
 }
 
 class _ComplaintsState extends State<Complaints> {
-  List<MessageModule> messages = [
-    MessageModule("assets/profile.jpg", "Mathematees",
-        "I don't get you sir hbsddgfdbfdbfdbfbfbfbfdjhhdhdhdhdhdh"),
-    MessageModule("assets/user.png", "Mathematees",
-        "I don't get you sir heerrsttddfsarsrsrsrsrsdhdfjgvbdfhgbdhfgbdfgbuedfguhsdb "),
-    MessageModule("assets/user.png", "Mathematees", "I don't get you sir "),
-  ];
+ 
   final _complaintCollection = FirebaseDatabase.instance.ref('Complaints');
   DatabaseReference? dbRef;
   @override

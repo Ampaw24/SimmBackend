@@ -6,7 +6,7 @@ TextStyle header1Bold = TextStyle(
 TextStyle header1Regular = TextStyle(
     color: AppColor.mainBlue, fontSize: 48, fontWeight: FontWeight.normal);
 TextStyle subheaderBold = TextStyle(
-    color: AppColor.mainBlue, fontSize: 18, fontWeight: FontWeight.bold);
+    color: AppColor.mainBlue, fontSize: 15, fontWeight: FontWeight.w400);
 TextStyle subheaderRegular =
     TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.normal);
 TextStyle subheaderBoldbtn =

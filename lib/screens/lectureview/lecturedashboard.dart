@@ -29,7 +29,7 @@ List<DashboardCard> cardcontent = [
       cardIcon: FontAwesomeIcons.fileText,
       cardColor: AppColor.mainBlue),
   DashboardCard(
-      navigate: MessageView(),
+      navigate: Messages(),
       title: "Messages",
       cardIcon: FontAwesomeIcons.message,
       cardColor: AppColor.mainBlue),
@@ -39,7 +39,7 @@ List<DashboardCard> cardcontent = [
       cardIcon: FontAwesomeIcons.bullhorn,
       cardColor: AppColor.mainBlue),
   DashboardCard(
-      navigate: ProfilePage(),
+      navigate: LProfileUpdate(),
       title: "Profile",
       cardIcon: FontAwesomeIcons.userPen,
       cardColor: AppColor.mainBlue),
@@ -85,7 +85,7 @@ class _LecturerDashboardState extends State<LecturerDashboard> {
                     const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
                 child: OutlinedButton.icon(
                     onPressed: () {
-                      Get.to(ProfilePage());
+                      Get.to(LProfileUpdate());
                     },
                     icon: Icon(Icons.person),
                     label: Text("Profile")),

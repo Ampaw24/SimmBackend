@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:simbackend/screens/selectpage.dart';
 import 'package:get/get.dart';
 import 'package:simbackend/utils/colors.dart';
- 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,11 +20,11 @@ class MyApp extends StatelessWidget {
       title: 'Student Info Manager',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color.fromARGB(255, 3, 46, 80)),
+            seedColor: const Color.fromARGB(255, 3, 46, 80)),
         dialogTheme: DialogTheme(backgroundColor: Colors.white),
         datePickerTheme: DatePickerThemeData(
-        backgroundColor: Colors.white,
-        rangePickerBackgroundColor: Colors.blue),
+            backgroundColor: Colors.white,
+            rangePickerBackgroundColor: Colors.blue),
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
